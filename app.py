@@ -1,9 +1,27 @@
 import os
 import json
 import logging
-from datetime import datetime
+import threading
+import time
+from datetime import datetime, timedelta
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+
+# Importa i nuovi moduli per l'integrazione Tilby
+from tilby_api import get_tilby_api_client, TilbyAPIError
+from tilby_sync import (
+    perform_incremental_sync, 
+    perform_full_sync, 
+    get_customers_by_filter,
+    get_customer_by_id,
+    get_loyalty_card_by_customer,
+    get_transactions_by_customer,
+    get_product_stats,
+    get_customer_stats,
+    update_customer_info,
+    update_whatsapp_consent,
+    add_custom_notes
+)
 
 # Configurazione del logging
 logging.basicConfig(
@@ -28,8 +46,12 @@ os.makedirs('data', exist_ok=True)
 def load_json_data(filename):
     filepath = os.path.join('data', filename)
     if os.path.exists(filepath) and os.path.getsize(filepath) > 0:
-        with open(filepath, 'r', encoding='utf-8') as file:
-            return json.load(file)
+        try:
+            with open(filepath, 'r', encoding='utf-8') as file:
+                return json.load(file)
+        except json.JSONDecodeError:
+            logger.error(f"Errore nel decodificare il file {filename}")
+            return {}
     return {}
 
 # Funzione per salvare i dati JSON
@@ -38,64 +60,32 @@ def save_json_data(filename, data):
     with open(filepath, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
-# Inizializzazione dei file JSON con valori predefiniti
-def initialize_json_files():
-    # Creazione di un file users.json predefinito se non esiste o è vuoto
-    users_file_path = os.path.join('data', 'users.json')
-    if not os.path.exists(users_file_path) or os.path.getsize(users_file_path) == 0:
-        default_users = {
-            "admin": {
-                "password": "admin123",  # Da cambiare in produzione!
-                "role": "admin"
-            }
-        }
-        save_json_data('users.json', default_users)
-        logger.info("File users.json creato con utente admin predefinito")
-    
-    # Creazione di un file settings.json predefinito se non esiste o è vuoto
-    settings_file_path = os.path.join('data', 'settings.json')
-    if not os.path.exists(settings_file_path) or os.path.getsize(settings_file_path) == 0:
-        default_settings = {
-            "app_name": "TU&YO CRM",
-            "version": "1.0.0",
-            "tilby_api_url": "",
-            "tilby_api_key": "",
-            "whatsapp_business_api_enabled": False,
-            "whatsapp_api_key": "",
-            "theme": "light",
-            "language": "it"
-        }
-        save_json_data('settings.json', default_settings)
-        logger.info("File settings.json creato con impostazioni predefinite")
-    
-    # Creazione di un file campaigns.json predefinito se non esiste o è vuoto
-    campaigns_file_path = os.path.join('data', 'campaigns.json')
-    if not os.path.exists(campaigns_file_path) or os.path.getsize(campaigns_file_path) == 0:
-        default_campaigns = {
-            "campaigns": []
-        }
-        save_json_data('campaigns.json', default_campaigns)
-        logger.info("File campaigns.json creato con lista vuota")
+# Funzione per sincronizzazione periodica in background
+def periodic_sync(interval=3600):  # Ogni ora di default
+    """Esegue la sincronizzazione con Tilby a intervalli regolari"""
+    while True:
+        logger.info(f"Avvio sincronizzazione periodica (intervallo: {interval} secondi)")
+        try:
+            stats = perform_incremental_sync()
+            if stats['success']:
+                logger.info(f"Sincronizzazione periodica completata con successo: {stats['customers']['new']} nuovi clienti, {stats['loyalty_cards']['new']} nuove carte")
+            else:
+                logger.error(f"Sincronizzazione periodica fallita: {stats['errors']}")
+        except Exception as e:
+            logger.error(f"Errore durante la sincronizzazione periodica: {str(e)}")
+        
+        # Attendi il prossimo intervallo
+        time.sleep(interval)
 
-# Chiama la funzione di inizializzazione all'avvio dell'app
-initialize_json_files()
+# Inizia il thread di sincronizzazione periodica
+sync_thread = None
 
-# Funzione per salvare i dati JSON
-def save_json_data(filename, data):
-    filepath = os.path.join('data', filename)
-    with open(filepath, 'w', encoding='utf-8') as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
-
-# Creazione di un file users.json predefinito se non esiste
-if not os.path.exists(os.path.join('data', 'users.json')):
-    default_users = {
-        "admin": {
-            "password": "admin123",  # Da cambiare in produzione!
-            "role": "admin"
-        }
-    }
-    save_json_data('users.json', default_users)
-    logger.info("File users.json creato con utente admin predefinito")
+def start_sync_thread():
+    global sync_thread
+    if sync_thread is None or not sync_thread.is_alive():
+        sync_thread = threading.Thread(target=periodic_sync, daemon=True)
+        sync_thread.start()
+        logger.info("Thread di sincronizzazione avviato")
 
 # Middleware di autenticazione
 def login_required(f):
@@ -142,102 +132,295 @@ def index():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    # Qui dovremo aggiungere la logica per recuperare i dati da Tilby
-    # Per ora, mostreremo dati di esempio
-    mock_data = {
-        'total_clients': 120,
-        'active_clients': 85,
-        'campaigns_sent': 5,
-        'loyalty_cards': 95
+    # Carica statistiche reali dai dati sincronizzati
+    customer_stats = get_customer_stats()
+    
+    # Gestisci eventuali errori nel calcolo delle statistiche
+    if 'error' in customer_stats:
+        flash('Errore nel calcolo delle statistiche. Verificare la sincronizzazione con Tilby.', 'warning')
+        customer_stats = {
+            'total_customers': 0,
+            'active_customers': 0,
+            'inactive_customers': 0,
+            'avg_transactions_per_customer': 0,
+            'avg_spending_per_customer': 0
+        }
+    
+    # Prepara i dati per la dashboard
+    data = {
+        'total_clients': customer_stats.get('total_customers', 0),
+        'active_clients': customer_stats.get('active_customers', 0),
+        'campaigns_sent': len(load_json_data('campaigns.json').get('campaigns', [])),
+        'loyalty_cards': len(load_json_data('loyalty_cards.json').get('cards', []))
     }
-    return render_template('dashboard.html', data=mock_data)
+    
+    return render_template('dashboard.html', data=data)
 
 @app.route('/clients')
 @login_required
 def clients_list():
-    # Qui dovremo implementare l'integrazione con Tilby per ottenere i dati reali dei clienti
-    # Per ora, utilizziamo dati di esempio
-    mock_clients = [
-        {'id': 1, 'name': 'Mario Rossi', 'phone': '+39 123 456 7890', 'loyalty_points': 45, 'last_visit': '2025-03-01'},
-        {'id': 2, 'name': 'Anna Verdi', 'phone': '+39 234 567 8901', 'loyalty_points': 78, 'last_visit': '2025-03-05'},
-        {'id': 3, 'name': 'Luca Bianchi', 'phone': '+39 345 678 9012', 'loyalty_points': 12, 'last_visit': '2025-02-20'}
-    ]
-    return render_template('clients/list.html', clients=mock_clients)
+    # Recupera i filtri dalla query string
+    loyalty_filter = request.args.get('loyalty', '')
+    visit_filter = request.args.get('visit', '')
+    search_query = request.args.get('q', '')
+    
+    # Carica tutti i clienti
+    customers_data = load_json_data('customers.json')
+    all_clients = customers_data.get('customers', [])
+    filtered_clients = []
+    
+    # Applica filtri se presenti
+    for client in all_clients:
+        # Applica filtro di ricerca
+        if search_query and search_query.lower() not in client.get('name', '').lower() and search_query not in client.get('phone', ''):
+            continue
+            
+        # Ottieni la carta fedeltà del cliente per i punti
+        client_card = get_loyalty_card_by_customer(client.get('id'))
+        loyalty_points = client_card.get('points', 0) if client_card else 0
+        client['loyalty_points'] = loyalty_points
+        
+        # Applica filtro fedeltà
+        if loyalty_filter:
+            if loyalty_filter == 'high' and loyalty_points < 50:
+                continue
+            elif loyalty_filter == 'medium' and (loyalty_points < 20 or loyalty_points >= 50):
+                continue
+            elif loyalty_filter == 'low' and loyalty_points >= 20:
+                continue
+                
+        # Applica filtro ultima visita
+        if visit_filter:
+            # Ottieni l'ultima transazione del cliente
+            client_transactions = get_transactions_by_customer(client.get('id'))
+            last_visit = client_transactions[0].get('date', '') if client_transactions else ''
+            client['last_visit'] = last_visit
+            
+            # Calcola giorni dalla visita
+            if last_visit:
+                last_visit_date = datetime.strptime(last_visit, '%Y-%m-%d')
+                days_diff = (datetime.now() - last_visit_date).days
+                
+                if visit_filter == 'week' and days_diff > 7:
+                    continue
+                elif visit_filter == 'month' and days_diff > 30:
+                    continue
+                elif visit_filter == 'older' and days_diff <= 30:
+                    continue
+            else:
+                # Se non ha mai visitato, considera come "older"
+                if visit_filter != 'older':
+                    continue
+        
+        # Se il cliente ha superato tutti i filtri, aggiungilo alla lista
+        filtered_clients.append(client)
+    
+    return render_template('clients/list.html', clients=filtered_clients)
 
-@app.route('/clients/<int:client_id>')
+@app.route('/clients/<client_id>')
 @login_required
 def client_detail(client_id):
-    # Simuliamo il recupero dei dettagli di un cliente specifico
-    # In futuro, questi dati verranno estratti dall'API Tilby
-    mock_client = {
-        'id': client_id,
-        'name': 'Mario Rossi',
-        'phone': '+39 123 456 7890',
-        'email': 'mario.rossi@example.com',
-        'loyalty_points': 45,
-        'last_visit': '2025-03-01',
-        'purchases': [
-            {'date': '2025-03-01', 'amount': 8.50, 'items': 'Yogurt fragola grande'},
-            {'date': '2025-02-15', 'amount': 6.00, 'items': 'Yogurt cioccolato medio'},
-            {'date': '2025-01-30', 'amount': 10.20, 'items': 'Yogurt pistacchio grande + topping'}
-        ]
-    }
-    return render_template('clients/detail.html', client=mock_client)
+    # Recupera i dati del cliente
+    client = get_customer_by_id(client_id)
+    
+    if not client:
+        flash('Cliente non trovato.', 'danger')
+        return redirect(url_for('clients_list'))
+    
+    # Recupera la carta fedeltà
+    loyalty_card = get_loyalty_card_by_customer(client_id)
+    if loyalty_card:
+        client['loyalty_points'] = loyalty_card.get('points', 0)
+    else:
+        client['loyalty_points'] = 0
+    
+    # Recupera le transazioni
+    transactions = get_transactions_by_customer(client_id)
+    
+    # Formatta le transazioni per la vista
+    client['purchases'] = []
+    for transaction in transactions:
+        purchase = {
+            'date': transaction.get('date', ''),
+            'amount': transaction.get('total_amount', 0),
+            'items': ', '.join([item.get('product_name', 'Prodotto') for item in transaction.get('items', [])])
+        }
+        client['purchases'].append(purchase)
+    
+    # Determina l'ultima visita
+    if client['purchases']:
+        client['last_visit'] = client['purchases'][0]['date']
+    else:
+        client['last_visit'] = 'Mai'
+    
+    return render_template('clients/detail.html', client=client)
 
 @app.route('/whatsapp/templates')
 @login_required
 def whatsapp_templates():
-    # Qui mostreremo i template per i messaggi WhatsApp
-    mock_templates = [
-        {'id': 1, 'name': 'Benvenuto', 'text': 'Ciao {name}, benvenuto da TU&YO La Tua Yogurteria! Grazie per esserti iscritto.'},
-        {'id': 2, 'name': 'Promozione', 'text': 'Ciao {name}! Solo per te oggi: sconto del 20% su tutti i nostri yogurt. Ti aspettiamo!'},
-        {'id': 3, 'name': 'Compleanno', 'text': 'Auguri {name}! Per festeggiare il tuo compleanno, vieni a trovarci per uno yogurt gratuito!'}
-    ]
-    return render_template('whatsapp/templates.html', templates=mock_templates)
+    # Carica i template esistenti
+    templates_data = load_json_data('whatsapp_templates.json')
+    templates = templates_data.get('templates', [])
+    
+    return render_template('whatsapp/templates.html', templates=templates)
 
 @app.route('/whatsapp/campaigns')
 @login_required
 def whatsapp_campaigns():
-    # Qui mostreremo le campagne WhatsApp passate e permetteremo di crearne di nuove
-    mock_campaigns = [
-        {'id': 1, 'name': 'Promo Weekend', 'template': 'Promozione', 'sent_date': '2025-03-01', 'recipients': 45, 'successful': 42},
-        {'id': 2, 'name': 'Nuovi Gusti', 'template': 'Informazione', 'sent_date': '2025-02-15', 'recipients': 62, 'successful': 60}
-    ]
-    return render_template('whatsapp/campaigns.html', campaigns=mock_campaigns)
+    # Carica le campagne esistenti
+    campaigns_data = load_json_data('campaigns.json')
+    campaigns = campaigns_data.get('campaigns', [])
+    
+    # Ordina le campagne per data (più recenti prima)
+    campaigns.sort(key=lambda x: x.get('sent_date', ''), reverse=True)
+    
+    return render_template('whatsapp/campaigns.html', campaigns=campaigns)
 
 @app.route('/reports/analytics')
 @login_required
 def analytics():
-    # Qui mostreremo le statistiche e le analisi
-    mock_analytics = {
-        'client_growth': [15, 22, 28, 35, 42, 50, 58, 65, 72, 80, 88, 95],
-        'monthly_visits': [120, 145, 165, 180, 210, 230],
-        'popular_products': [
-            {'name': 'Yogurt Fragola', 'percentage': 35},
-            {'name': 'Yogurt Cioccolato', 'percentage': 28},
-            {'name': 'Yogurt Pistacchio', 'percentage': 15},
-            {'name': 'Altri gusti', 'percentage': 22}
-        ]
+    # Calcola statistiche reali
+    customer_stats = get_customer_stats()
+    product_stats = get_product_stats()
+    
+    # Prepara i dati per la vista
+    analytics_data = {
+        'client_growth': [],  # Andrebbe calcolato in base alle date di registrazione
+        'monthly_visits': [],  # Andrebbe calcolato in base alle transazioni per mese
+        'popular_products': []  # Prodotti più venduti
     }
-    return render_template('reports/analytics.html', analytics=mock_analytics)
+    
+    # Aggiungi i prodotti più popolari
+    for product in product_stats.get('top_products', [])[:5]:
+        analytics_data['popular_products'].append({
+            'name': product.get('name', 'Prodotto'),
+            'percentage': (product.get('quantity', 0) / product_stats.get('total_products_sold', 1)) * 100
+        })
+    
+    return render_template('reports/analytics.html', analytics=analytics_data)
 
 # API endpoints per operazioni AJAX
 @app.route('/api/clients/search', methods=['GET'])
 @login_required
 def search_clients():
     query = request.args.get('q', '')
-    # Implementare la ricerca reale quando avremo l'integrazione con Tilby
-    # Per ora, restituiamo risultati di esempio
-    mock_results = [
-        {'id': 1, 'name': 'Mario Rossi', 'phone': '+39 123 456 7890'},
-        {'id': 2, 'name': 'Maria Rossini', 'phone': '+39 123 567 8901'}
-    ]
-    return jsonify(mock_results)
+    if not query or len(query) < 2:
+        return jsonify([])
+    
+    # Carica tutti i clienti
+    customers_data = load_json_data('customers.json')
+    all_clients = customers_data.get('customers', [])
+    
+    # Filtra i clienti in base alla query
+    results = []
+    for client in all_clients:
+        if (query.lower() in client.get('name', '').lower() or 
+            query in client.get('phone', '')):
+            results.append({
+                'id': client.get('id'),
+                'name': client.get('name'),
+                'phone': client.get('phone')
+            })
+    
+    return jsonify(results[:10])  # Limita a 10 risultati
+
+@app.route('/api/sync/now', methods=['POST'])
+@login_required
+def api_sync_now():
+    """API endpoint per avviare una sincronizzazione manuale"""
+    try:
+        full_sync = request.json.get('full_sync', False)
+        
+        if full_sync:
+            stats = perform_full_sync()
+        else:
+            stats = perform_incremental_sync()
+        
+        return jsonify({
+            'success': stats['success'],
+            'message': 'Sincronizzazione completata con successo' if stats['success'] else 'Errore durante la sincronizzazione',
+            'stats': stats
+        })
+    except Exception as e:
+        logger.error(f"Errore durante la sincronizzazione manuale: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f'Errore durante la sincronizzazione: {str(e)}'
+        }), 500
+
+@app.route('/api/clients/<client_id>/notes', methods=['POST'])
+@login_required
+def update_client_notes(client_id):
+    """API endpoint per aggiornare le note di un cliente"""
+    try:
+        notes = request.json.get('notes', '')
+        success = add_custom_notes(client_id, notes)
+        
+        if success:
+            return jsonify({
+                'success': True,
+                'message': 'Note aggiornate con successo'
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'message': 'Errore nell\'aggiornamento delle note'
+            }), 400
+    except Exception as e:
+        logger.error(f"Errore nell'aggiornamento delle note: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f'Errore: {str(e)}'
+        }), 500
+
+@app.route('/api/clients/<client_id>/whatsapp-consent', methods=['POST'])
+@login_required
+def update_client_whatsapp_consent(client_id):
+    """API endpoint per aggiornare il consenso WhatsApp di un cliente"""
+    try:
+        consent = request.json.get('consent', False)
+        success = update_whatsapp_consent(client_id, consent)
+        
+        if success:
+            return jsonify({
+                'success': True,
+                'message': 'Consenso WhatsApp aggiornato con successo'
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'message': 'Errore nell\'aggiornamento del consenso'
+            }), 400
+    except Exception as e:
+        logger.error(f"Errore nell'aggiornamento del consenso WhatsApp: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f'Errore: {str(e)}'
+        }), 500
 
 # Handler per la pagina 404
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('errors/404.html'), 404
+
+# Avvia la sincronizzazione all'avvio dell'applicazione
+@app.before_first_request
+def before_first_request():
+    """Esegue operazioni prima della prima richiesta"""
+    logger.info("Avvio sincronizzazione iniziale...")
+    try:
+        # Esegui una sincronizzazione incrementale all'avvio
+        stats = perform_incremental_sync()
+        if stats['success']:
+            flash('Sincronizzazione con Tilby completata con successo!', 'success')
+        else:
+            flash('Errore durante la sincronizzazione con Tilby. Controlla i log.', 'warning')
+        
+        # Avvia il thread di sincronizzazione periodica
+        start_sync_thread()
+    except Exception as e:
+        logger.error(f"Errore durante la sincronizzazione iniziale: {str(e)}")
+        flash(f'Errore durante la sincronizzazione: {str(e)}', 'danger')
 
 # Avvio dell'applicazione
 if __name__ == '__main__':

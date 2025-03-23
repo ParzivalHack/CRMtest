@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Pagina Non Trovata - TU&YO CRM{% endblock %}
+
+{% block additional_css %}
+<style>
+    .error-container {
+        text-align: center;
+        padding: 60px 20px;
+    }
+    
+    .error-code {
+        font-size: 120px;
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .error-message {
+        font-size: 24px;
+        margin-bottom: 30px;
+        color: #343a40;
+    }
+    
+    .error-icon {
+        font-size: 80px;
+        color: #6c757d;
+        margin-bottom: 20px;
+    }
+    
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="error-container">
+        <div class="error-icon">
+            <i class="fas fa-map-signs"></i>
+        </div>
+        <div class="error-code">404</div>
+        <div class="error-message">Oops! Pagina non trovata</div>
+        <p class="text-muted">La pagina che stai cercando potrebbe essere stata rimossa, rinominata o temporaneamente non disponibile.</p>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary back-link">
+            <i class="fas fa-home me-2"></i>Torna alla Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
