@@ -1,0 +1,10 @@
+{
+    "app_name": "TU&YO CRM",
+    "version": "1.0.0",
+    "tilby_api_url": "",
+    "tilby_api_key": "",
+    "whatsapp_business_api_enabled": false,
+    "whatsapp_api_key": "",
+    "theme": "light",
+    "language": "it"
+}

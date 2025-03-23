@@ -1,0 +1,1038 @@
+{% extends "base.html" %}
+
+{% block title %}Campagne WhatsApp - TU&YO CRM{% endblock %}
+
+{% block additional_css %}
+<style>
+    .campaign-card {
+        transition: transform 0.3s;
+        margin-bottom: 20px;
+    }
+    .campaign-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .badge-success-rate {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+        border-radius: 20px;
+    }
+    .step-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        flex: 1;
+    }
+    .step::after {
+        content: '';
+        width: 100%;
+        height: 3px;
+        background-color: #e9ecef;
+        position: absolute;
+        top: 25px;
+        left: 50%;
+        z-index: 0;
+    }
+    .step:last-child::after {
+        display: none;
+    }
+    .step-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        z-index: 1;
+        margin-bottom: 10px;
+    }
+    .step.active .step-circle {
+        background-color: #007bff;
+        color: white;
+    }
+    .step.completed .step-circle {
+        background-color: #28a745;
+        color: white;
+    }
+    .step-title {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+    .preview-message {
+        background-color: #DCF8C6;
+        border-radius: 8px;
+        padding: 15px;
+        position: relative;
+        margin-bottom: 15px;
+    }
+    .preview-message::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid #DCF8C6;
+        left: -10px;
+        top: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Campagne WhatsApp</h1>
+        <div>
+            <button class="btn btn-primary" id="newCampaignBtn">
+                <i class="fas fa-plus"></i> Nuova Campagna
+            </button>
+        </div>
+    </div>
+
+    <!-- Lista campagne -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Campagne Recenti</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown">
+                            Filtra
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Tutte le campagne</a></li>
+                            <li><a class="dropdown-item" href="#">Ultimi 7 giorni</a></li>
+                            <li><a class="dropdown-item" href="#">Ultimi 30 giorni</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Maggior tasso di successo</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% for campaign in campaigns %}
+                    <div class="campaign-card card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">{{ campaign.name }}</h5>
+                                <span class="badge bg-primary">{{ campaign.template }}</span>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p class="mb-1"><i class="fas fa-calendar-alt text-muted me-2"></i>{{ campaign.sent_date }}</p>
+                                    <p class="mb-0"><i class="fas fa-users text-muted me-2"></i>{{ campaign.recipients }} destinatari</p>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    {% set success_rate = (campaign.successful / campaign.recipients * 100) | round %}
+                                    {% if success_rate >= 90 %}
+                                        <span class="badge bg-success badge-success-rate">{{ success_rate }}% consegnati</span>
+                                    {% elif success_rate >= 70 %}
+                                        <span class="badge bg-info badge-success-rate">{{ success_rate }}% consegnati</span>
+                                    {% else %}
+                                        <span class="badge bg-warning badge-success-rate">{{ success_rate }}% consegnati</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="border-top pt-3 d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-primary view-campaign-btn" data-campaign-id="{{ campaign.id }}">
+                                    <i class="fas fa-chart-bar"></i> Metriche
+                                </button>
+                                <button class="btn btn-sm btn-outline-success repeat-campaign-btn" data-campaign-id="{{ campaign.id }}">
+                                    <i class="fas fa-redo"></i> Ripeti Campagna
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                
+                    <div class="campaign-card card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">Nuovi Gusti Estate</h5>
+                                <span class="badge bg-primary">Informazione</span>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p class="mb-1"><i class="fas fa-calendar-alt text-muted me-2"></i>25/02/2025</p>
+                                    <p class="mb-0"><i class="fas fa-users text-muted me-2"></i>80 destinatari</p>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <span class="badge bg-success badge-success-rate">95% consegnati</span>
+                                </div>
+                            </div>
+                            <div class="border-top pt-3 d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-primary view-campaign-btn" data-campaign-id="3">
+                                    <i class="fas fa-chart-bar"></i> Metriche
+                                </button>
+                                <button class="btn btn-sm btn-outline-success repeat-campaign-btn" data-campaign-id="3">
+                                    <i class="fas fa-redo"></i> Ripeti Campagna
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="campaign-card card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">Apertura Domenicale</h5>
+                                <span class="badge bg-primary">Informazione</span>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p class="mb-1"><i class="fas fa-calendar-alt text-muted me-2"></i>10/02/2025</p>
+                                    <p class="mb-0"><i class="fas fa-users text-muted me-2"></i>120 destinatari</p>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <span class="badge bg-info badge-success-rate">86% consegnati</span>
+                                </div>
+                            </div>
+                            <div class="border-top pt-3 d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-primary view-campaign-btn" data-campaign-id="4">
+                                    <i class="fas fa-chart-bar"></i> Metriche
+                                </button>
+                                <button class="btn btn-sm btn-outline-success repeat-campaign-btn" data-campaign-id="4">
+                                    <i class="fas fa-redo"></i> Ripeti Campagna
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-history"></i> Carica Più Campagne
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Statistiche campagne -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Statistiche Invii</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h6>Tasso di Consegna</h6>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" style="width: 92%">92%</div>
+                        </div>
+                        <small class="text-muted">Media ultimi 30 giorni</small>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>Tasso di Risposta</h6>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-info" style="width: 38%">38%</div>
+                        </div>
+                        <small class="text-muted">Media ultimi 30 giorni</small>
+                    </div>
+                    
+                    <div>
+                        <h6>Andamento Mensile</h6>
+                        <canvas id="campaignStatsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Limiti API -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Limiti API WhatsApp</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        I limiti si aggiornano il 1° di ogni mese.
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Messaggi Mensili Disponibili</label>
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar bg-primary" style="width: 37%">
+                                370 / 1.000
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Template Disponibili</label>
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar bg-success" style="width: 50%">
+                                5 / 10
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pannello creazione campagna -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="campaignPanel" aria-labelledby="campaignPanelLabel" style="width: 650px;">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="campaignPanelLabel">Crea Nuova Campagna</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div id="campaignWizard">
+            <!-- Indicatore passaggi -->
+            <div class="step-indicator mb-4">
+                <div class="step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <div class="step-title">Dettagli Campagna</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-title">Scegli Template</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-title">Seleziona Destinatari</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <div class="step-title">Conferma</div>
+                </div>
+            </div>
+            
+            <!-- Step 1: Dettagli campagna -->
+            <div class="step-content" id="step1" style="display: block;">
+                <h5 class="mb-3">Dettagli Campagna</h5>
+                <form id="campaignDetailsForm">
+                    <div class="mb-3">
+                        <label for="campaignName" class="form-label">Nome Campagna</label>
+                        <input type="text" class="form-control" id="campaignName" required>
+                        <div class="form-text">Assegna un nome alla campagna per identificarla facilmente.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="campaignDescription" class="form-label">Descrizione (opzionale)</label>
+                        <textarea class="form-control" id="campaignDescription" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="campaignSchedule" class="form-label">Pianificazione</label>
+                        <select class="form-select" id="campaignSchedule">
+                            <option value="now" selected>Invia subito</option>
+                            <option value="schedule">Pianifica per una data specifica</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="scheduleDateContainer" style="display: none;">
+                        <label for="scheduleDate" class="form-label">Data e Ora</label>
+                        <input type="datetime-local" class="form-control" id="scheduleDate">
+                    </div>
+                </form>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Annulla</button>
+                    <button type="button" class="btn btn-primary next-step" data-step="1">Continua</button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Scegli template -->
+            <div class="step-content" id="step2" style="display: none;">
+                <h5 class="mb-3">Scegli Template</h5>
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="searchTemplate" placeholder="Cerca template...">
+                </div>
+                <div class="template-list">
+                    <div class="card mb-3 template-card">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="templateRadio" id="template1" value="1" checked>
+                                <label class="form-check-label" for="template1">
+                                    <strong>Benvenuto</strong>
+                                </label>
+                            </div>
+                            <div class="preview-message mt-2">
+                                Ciao {name}, benvenuto da TU&YO La Tua Yogurteria! Grazie per esserti iscritto.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3 template-card">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="templateRadio" id="template2" value="2">
+                                <label class="form-check-label" for="template2">
+                                    <strong>Promozione</strong>
+                                </label>
+                            </div>
+                            <div class="preview-message mt-2">
+                                Ciao {name}! Solo per te oggi: sconto del 20% su tutti i nostri yogurt. Ti aspettiamo!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3 template-card">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="templateRadio" id="template3" value="3">
+                                <label class="form-check-label" for="template3">
+                                    <strong>Compleanno</strong>
+                                </label>
+                            </div>
+                            <div class="preview-message mt-2">
+                                Auguri {name}! Per festeggiare il tuo compleanno, vieni a trovarci per uno yogurt gratuito!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-outline-secondary prev-step" data-step="2">Indietro</button>
+                    <button type="button" class="btn btn-primary next-step" data-step="2">Continua</button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Seleziona destinatari -->
+            <div class="step-content" id="step3" style="display: none;">
+                <h5 class="mb-3">Seleziona Destinatari</h5>
+                <div class="mb-3">
+                    <label class="form-label">Metodo di Selezione</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="selectionMethod" id="allClients" value="all" checked>
+                        <label class="form-check-label" for="allClients">
+                            Tutti i clienti con consenso al marketing WhatsApp
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="selectionMethod" id="filterClients" value="filter">
+                        <label class="form-check-label" for="filterClients">
+                            Filtra clienti
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="selectionMethod" id="selectClients" value="select">
+                        <label class="form-check-label" for="selectClients">
+                            Seleziona clienti specifici
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="filterOptions" style="display: none;">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="mb-3">Filtra Per</h6>
+                            <div class="mb-3">
+                                <label for="pointsFilter" class="form-label">Punti Fedeltà</label>
+                                <select class="form-select" id="pointsFilter">
+                                    <option value="">Qualsiasi</option>
+                                    <option value="50">50+ punti</option>
+                                    <option value="20">20+ punti</option>
+                                    <option value="10">10+ punti</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lastVisitFilter" class="form-label">Ultima Visita</label>
+                                <select class="form-select" id="lastVisitFilter">
+                                    <option value="">Qualsiasi</option>
+                                    <option value="7">Ultimi 7 giorni</option>
+                                    <option value="30">Ultimi 30 giorni</option>
+                                    <option value="90">Ultimi 90 giorni</option>
+                                    <option value="inactive">Inattivi >90 giorni</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-outline-primary w-100" id="applyFiltersBtn">
+                                <i class="fas fa-filter me-2"></i>Applica Filtri
+                            </button>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span id="filteredCount">0</span> clienti corrispondono ai filtri selezionati.
+                    </div>
+                </div>
+                
+                <div id="selectOptions" style="display: none;">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="searchClients" placeholder="Cerca clienti...">
+                            </div>
+                            <div class="client-list" style="max-height: 300px; overflow-y: auto;">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input client-check" type="checkbox" value="1" id="client1">
+                                    <label class="form-check-label" for="client1">
+                                        Mario Rossi - +39 123 456 7890
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input client-check" type="checkbox" value="2" id="client2">
+                                    <label class="form-check-label" for="client2">
+                                        Anna Verdi - +39 234 567 8901
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input client-check" type="checkbox" value="3" id="client3">
+                                    <label class="form-check-label" for="client3">
+                                        Luca Bianchi - +39 345 678 9012
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input client-check" type="checkbox" value="4" id="client4">
+                                    <label class="form-check-label" for="client4">
+                                        Chiara Neri - +39 456 789 0123
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input client-check" type="checkbox" value="5" id="client5">
+                                    <label class="form-check-label" for="client5">
+                                        Paolo Belli - +39 567 890 1234
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span id="selectedClientsCount">0</span> clienti selezionati.
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-outline-secondary prev-step" data-step="3">Indietro</button>
+                    <button type="button" class="btn btn-primary next-step" data-step="3">Continua</button>
+                </div>
+            </div>
+            
+            <!-- Step 4: Riepilogo e conferma -->
+            <div class="step-content" id="step4" style="display: none;">
+                <h5 class="mb-3">Conferma Invio</h5>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">Riepilogo Campagna</h6>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Nome:</div>
+                            <div class="col-7" id="summaryName">-</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Descrizione:</div>
+                            <div class="col-7" id="summaryDescription">-</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Pianificazione:</div>
+                            <div class="col-7" id="summarySchedule">Invio immediato</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Template:</div>
+                            <div class="col-7" id="summaryTemplate">Benvenuto</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Destinatari:</div>
+                            <div class="col-7" id="summaryRecipients">Tutti i clienti (120)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Una volta confermato, l'invio della campagna non potrà essere annullato.
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-outline-secondary prev-step" data-step="4">Indietro</button>
+                    <button type="button" class="btn btn-success" id="confirmCampaignBtn">
+                        <i class="fab fa-whatsapp me-2"></i>Conferma e Invia
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal dettagli campagna -->
+<div class="modal fade" id="campaignDetailsModal" tabindex="-1" aria-labelledby="campaignDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="campaignDetailsModalLabel">Dettagli Campagna</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5 id="campaignModalName">Promo Weekend</h5>
+                        <p class="text-muted" id="campaignModalDate">Inviata il 01/03/2025</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <span class="badge bg-primary" id="campaignModalTemplate">Promozione</span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">Performance</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <h5 id="campaignModalSent">45</h5>
+                                        <small class="text-muted">Inviati</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5 id="campaignModalDelivered">42</h5>
+                                        <small class="text-muted">Consegnati</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5 id="campaignModalRead">35</h5>
+                                        <small class="text-muted">Letti</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <label class="form-label">Tasso di Consegna</label>
+                                    <div class="progress mb-3">
+                                        <div class="progress-bar bg-success" id="campaignModalDeliveryRate" style="width: 93%">93%</div>
+                                    </div>
+                                    
+                                    <label class="form-label">Tasso di Lettura</label>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" id="campaignModalReadRate" style="width: 78%">78%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-5">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">Contenuto Messaggio</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="preview-message" id="campaignModalContent">
+                            Ciao {name}! Solo per te oggi: sconto del 20% su tutti i nostri yogurt. Ti aspettiamo!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+        <button type="button" class="btn btn-success" id="repeatCampaignModalBtn">
+            <i class="fas fa-redo me-2"></i>Ripeti Campagna
+        </button>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Grafico andamento campagne
+const statsCtx = document.getElementById('campaignStatsChart').getContext('2d');
+const statsChart = new Chart(statsCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Gen', 'Feb', 'Mar'],
+        datasets: [{
+            label: 'Messaggi Inviati',
+            data: [180, 220, 370],
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Gestione nuovo panel campagna
+const campaignPanel = new bootstrap.Offcanvas(document.getElementById('campaignPanel'));
+
+document.getElementById('newCampaignBtn').addEventListener('click', function() {
+    campaignPanel.show();
+    
+    // Reset wizard
+    showStep(1);
+    document.getElementById('campaignDetailsForm').reset();
+    document.getElementById('scheduleDateContainer').style.display = 'none';
+});
+
+// Gestione modale dettagli campagna
+document.querySelectorAll('.view-campaign-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const campaignId = this.getAttribute('data-campaign-id');
+        const campaignCard = this.closest('.campaign-card');
+        const campaignName = campaignCard.querySelector('h5').textContent;
+        const campaignTemplate = campaignCard.querySelector('.badge').textContent;
+        const campaignDate = campaignCard.querySelector('.fa-calendar-alt').nextSibling.textContent.trim();
+        const recipientsText = campaignCard.querySelector('.fa-users').nextSibling.textContent.trim();
+        const recipients = parseInt(recipientsText.match(/\d+/)[0]);
+        
+        // Dati di esempio per la visualizzazione
+        let delivered, read;
+        const successRate = campaignCard.querySelector('.badge-success-rate').textContent;
+        delivered = Math.round(recipients * parseInt(successRate) / 100);
+        read = Math.round(delivered * 0.8); // supponiamo che l'80% dei messaggi consegnati sia letto
+        
+        // Aggiorna il contenuto del modale
+        document.getElementById('campaignModalName').textContent = campaignName;
+        document.getElementById('campaignModalDate').textContent = 'Inviata il ' + campaignDate;
+        document.getElementById('campaignModalTemplate').textContent = campaignTemplate;
+        document.getElementById('campaignModalSent').textContent = recipients;
+        document.getElementById('campaignModalDelivered').textContent = delivered;
+        document.getElementById('campaignModalRead').textContent = read;
+        
+        const deliveryRate = Math.round(delivered / recipients * 100);
+        const readRate = Math.round(read / delivered * 100);
+        
+        document.getElementById('campaignModalDeliveryRate').style.width = deliveryRate + '%';
+        document.getElementById('campaignModalDeliveryRate').textContent = deliveryRate + '%';
+        document.getElementById('campaignModalReadRate').style.width = readRate + '%';
+        document.getElementById('campaignModalReadRate').textContent = readRate + '%';
+        
+        // Mostra il modale
+        const modal = new bootstrap.Modal(document.getElementById('campaignDetailsModal'));
+        modal.show();
+    });
+});
+
+// Gestione ripeti campagna
+document.querySelectorAll('.repeat-campaign-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const campaignId = this.getAttribute('data-campaign-id');
+        const campaignCard = this.closest('.campaign-card');
+        const campaignName = campaignCard.querySelector('h5').textContent;
+        
+        // Apri il pannello campagna
+        campaignPanel.show();
+        
+        // Reset wizard e compila con i dati della campagna precedente
+        showStep(1);
+        document.getElementById('campaignName').value = `Copia di ${campaignName}`;
+        
+        // Seleziona automaticamente lo stesso template (per semplicità qui seleziona il primo)
+        setTimeout(() => {
+            document.querySelector('input[name="templateRadio"]').checked = true;
+        }, 500);
+    });
+});
+
+// Ripeti campagna dal modale dettagli
+document.getElementById('repeatCampaignModalBtn').addEventListener('click', function() {
+    const campaignName = document.getElementById('campaignModalName').textContent;
+    
+    // Chiudi il modale
+    const modal = bootstrap.Modal.getInstance(document.getElementById('campaignDetailsModal'));
+    modal.hide();
+    
+    // Apri il pannello campagna
+    campaignPanel.show();
+    
+    // Reset wizard e compila con i dati della campagna precedente
+    showStep(1);
+    document.getElementById('campaignName').value = `Copia di ${campaignName}`;
+    
+    // Seleziona automaticamente lo stesso template (per semplicità qui seleziona il primo)
+    setTimeout(() => {
+        document.querySelector('input[name="templateRadio"]').checked = true;
+    }, 500);
+});
+
+// Gestione wizard
+function showStep(stepNumber) {
+    // Nascondi tutti i passaggi
+    document.querySelectorAll('.step-content').forEach(step => {
+        step.style.display = 'none';
+    });
+    
+    // Mostra il passaggio corrente
+    document.getElementById(`step${stepNumber}`).style.display = 'block';
+    
+    // Aggiorna indicatore passaggi
+    document.querySelectorAll('.step').forEach(step => {
+        const stepNum = parseInt(step.getAttribute('data-step'));
+        
+        if (stepNum < stepNumber) {
+            step.classList.remove('active');
+            step.classList.add('completed');
+        } else if (stepNum === stepNumber) {
+            step.classList.add('active');
+            step.classList.remove('completed');
+        } else {
+            step.classList.remove('active', 'completed');
+        }
+    });
+}
+
+// Pulsanti avanzamento wizard
+document.querySelectorAll('.next-step').forEach(button => {
+    button.addEventListener('click', function() {
+        const currentStep = parseInt(this.getAttribute('data-step'));
+        
+        // Validazioni specifiche per ogni step
+        if (currentStep === 1) {
+            const campaignName = document.getElementById('campaignName').value;
+            if (!campaignName) {
+                alert('Inserisci un nome per la campagna.');
+                return;
+            }
+        }
+        
+        // Se siamo all'ultimo step, facciamo un'anteprima
+        if (currentStep === 3) {
+            updateSummary();
+        }
+        
+        showStep(currentStep + 1);
+    });
+});
+
+document.querySelectorAll('.prev-step').forEach(button => {
+    button.addEventListener('click', function() {
+        const currentStep = parseInt(this.getAttribute('data-step'));
+        showStep(currentStep - 1);
+    });
+});
+
+// Mostra/nascondi opzioni data pianificazione
+document.getElementById('campaignSchedule').addEventListener('change', function() {
+    const scheduleContainer = document.getElementById('scheduleDateContainer');
+    
+    if (this.value === 'schedule') {
+        scheduleContainer.style.display = 'block';
+    } else {
+        scheduleContainer.style.display = 'none';
+    }
+});
+
+// Gestione metodo selezione destinatari
+document.querySelectorAll('input[name="selectionMethod"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const filterOptions = document.getElementById('filterOptions');
+        const selectOptions = document.getElementById('selectOptions');
+        
+        filterOptions.style.display = 'none';
+        selectOptions.style.display = 'none';
+        
+        if (this.value === 'filter') {
+            filterOptions.style.display = 'block';
+        } else if (this.value === 'select') {
+            selectOptions.style.display = 'block';
+        }
+    });
+});
+
+// Simulazione filtri
+document.getElementById('applyFiltersBtn').addEventListener('click', function() {
+    const pointsFilter = document.getElementById('pointsFilter').value;
+    const lastVisitFilter = document.getElementById('lastVisitFilter').value;
+    
+    // Simuliamo un conteggio dei clienti filtrati
+    let filteredCount;
+    
+    if (pointsFilter === '50' && lastVisitFilter === '7') {
+        filteredCount = 5;
+    } else if (pointsFilter === '50' || lastVisitFilter === '7') {
+        filteredCount = 12;
+    } else if (pointsFilter === '20' || lastVisitFilter === '30') {
+        filteredCount = 25;
+    } else if (pointsFilter === '10' || lastVisitFilter === '90') {
+        filteredCount = 58;
+    } else if (lastVisitFilter === 'inactive') {
+        filteredCount = 30;
+    } else {
+        filteredCount = 85;
+    }
+    
+    document.getElementById('filteredCount').textContent = filteredCount;
+});
+
+// Conteggio clienti selezionati
+const clientCheckboxes = document.querySelectorAll('.client-check');
+clientCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const selectedCount = document.querySelectorAll('.client-check:checked').length;
+        document.getElementById('selectedClientsCount').textContent = selectedCount;
+    });
+});
+
+// Compilazione riepilogo finale
+function updateSummary() {
+    const campaignName = document.getElementById('campaignName').value;
+    const campaignDescription = document.getElementById('campaignDescription').value;
+    const campaignSchedule = document.getElementById('campaignSchedule').value;
+    const scheduleDate = document.getElementById('scheduleDate').value;
+    
+    // Template selezionato
+    const selectedTemplateRadio = document.querySelector('input[name="templateRadio"]:checked');
+    const selectedTemplateCard = selectedTemplateRadio.closest('.template-card');
+    const templateName = selectedTemplateCard.querySelector('label').textContent.trim();
+    
+    // Destinatari
+    const selectionMethod = document.querySelector('input[name="selectionMethod"]:checked').value;
+    let recipientsText = "";
+    
+    if (selectionMethod === 'all') {
+        recipientsText = "Tutti i clienti (120)";
+    } else if (selectionMethod === 'filter') {
+        const filteredCount = document.getElementById('filteredCount').textContent;
+        recipientsText = `Clienti filtrati (${filteredCount})`;
+    } else if (selectionMethod === 'select') {
+        const selectedCount = document.getElementById('selectedClientsCount').textContent;
+        recipientsText = `Clienti selezionati manualmente (${selectedCount})`;
+    }
+    
+    // Aggiorna i campi del riepilogo
+    document.getElementById('summaryName').textContent = campaignName;
+    document.getElementById('summaryDescription').textContent = campaignDescription || "Nessuna descrizione";
+    
+    if (campaignSchedule === 'schedule' && scheduleDate) {
+        const formattedDate = new Date(scheduleDate).toLocaleString('it-IT');
+        document.getElementById('summarySchedule').textContent = `Pianificata per ${formattedDate}`;
+    } else {
+        document.getElementById('summarySchedule').textContent = "Invio immediato";
+    }
+    
+    document.getElementById('summaryTemplate').textContent = templateName;
+    document.getElementById('summaryRecipients').textContent = recipientsText;
+}
+
+// Conferma campagna
+document.getElementById('confirmCampaignBtn').addEventListener('click', function() {
+    const btn = this;
+    const originalText = btn.innerHTML;
+    
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Invio in corso...';
+    btn.disabled = true;
+    
+    // Simulazione invio
+    setTimeout(function() {
+        btn.innerHTML = '<i class="fas fa-check me-2"></i>Campagna inviata!';
+        
+        setTimeout(function() {
+            // Chiudi il pannello
+            campaignPanel.hide();
+            
+            // Reset pulsante
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            
+            // Notifica l'utente
+            const alertHTML = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Campagna inviata con successo! I messaggi verranno recapitati a breve.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+            
+            // Aggiungi la nuova campagna alla lista
+            const campaignName = document.getElementById('campaignName').value;
+            const today = new Date().toLocaleDateString('it-IT');
+            
+            // Calcola numero destinatari
+            const selectionMethod = document.querySelector('input[name="selectionMethod"]:checked').value;
+            let recipients = 120;
+            
+            if (selectionMethod === 'filter') {
+                recipients = parseInt(document.getElementById('filteredCount').textContent);
+            } else if (selectionMethod === 'select') {
+                recipients = parseInt(document.getElementById('selectedClientsCount').textContent);
+            }
+            
+            const newCampaignHTML = `
+                <div class="campaign-card card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">${campaignName}</h5>
+                            <span class="badge bg-primary">${document.getElementById('summaryTemplate').textContent}</span>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p class="mb-1"><i class="fas fa-calendar-alt text-muted me-2"></i>${today}</p>
+                                <p class="mb-0"><i class="fas fa-users text-muted me-2"></i>${recipients} destinatari</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <span class="badge bg-success badge-success-rate">100% consegnati</span>
+                            </div>
+                        </div>
+                        <div class="border-top pt-3 d-flex justify-content-between">
+                            <button class="btn btn-sm btn-outline-primary view-campaign-btn" data-campaign-id="new">
+                                <i class="fas fa-chart-bar"></i> Metriche
+                            </button>
+                            <button class="btn btn-sm btn-outline-success repeat-campaign-btn" data-campaign-id="new">
+                                <i class="fas fa-redo"></i> Ripeti Campagna
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const campaignsList = document.querySelector('.card-body');
+            campaignsList.insertAdjacentHTML('afterbegin', newCampaignHTML);
+            
+            // Aggiungi event listener ai nuovi pulsanti
+            document.querySelectorAll('.view-campaign-btn[data-campaign-id="new"]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const campaignCard = this.closest('.campaign-card');
+                    const campaignName = campaignCard.querySelector('h5').textContent;
+                    const campaignTemplate = campaignCard.querySelector('.badge').textContent;
+                    const campaignDate = campaignCard.querySelector('.fa-calendar-alt').nextSibling.textContent.trim();
+                    const recipientsText = campaignCard.querySelector('.fa-users').nextSibling.textContent.trim();
+                    const recipients = parseInt(recipientsText.match(/\d+/)[0]);
+                    
+                    // Aggiorna il contenuto del modale
+                    document.getElementById('campaignModalName').textContent = campaignName;
+                    document.getElementById('campaignModalDate').textContent = 'Inviata il ' + campaignDate;
+                    document.getElementById('campaignModalTemplate').textContent = campaignTemplate;
+                    document.getElementById('campaignModalSent').textContent = recipients;
+                    document.getElementById('campaignModalDelivered').textContent = recipients;
+                    document.getElementById('campaignModalRead').textContent = Math.round(recipients * 0.8);
+                    
+                    document.getElementById('campaignModalDeliveryRate').style.width = '100%';
+                    document.getElementById('campaignModalDeliveryRate').textContent = '100%';
+                    document.getElementById('campaignModalReadRate').style.width = '80%';
+                    document.getElementById('campaignModalReadRate').textContent = '80%';
+                    
+                    // Mostra il modale
+                    const modal = new bootstrap.Modal(document.getElementById('campaignDetailsModal'));
+                    modal.show();
+                });
+            });
+            
+            document.querySelectorAll('.repeat-campaign-btn[data-campaign-id="new"]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const campaignCard = this.closest('.campaign-card');
+                    const campaignName = campaignCard.querySelector('h5').textContent;
+                    
+                    // Apri il pannello campagna
+                    campaignPanel.show();
+                    
+                    // Reset wizard e compila con i dati della campagna precedente
+                    showStep(1);
+                    document.getElementById('campaignName').value = `Copia di ${campaignName}`;
+                    
+                    // Seleziona automaticamente lo stesso template
+                    setTimeout(() => {
+                        document.querySelector('input[name="templateRadio"]').checked = true;
+                    }, 500);
+                });
+            });
+        }, 1500);
+    }, 3000);
+});
+});
+</script>
+{% endblock %}

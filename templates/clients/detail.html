@@ -1,0 +1,733 @@
+{% extends "base.html" %}
+
+{% block title %}{{ client.name }} - TU&YO CRM{% endblock %}
+
+{% block additional_css %}
+<style>
+    .client-header {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .profile-section {
+        display: flex;
+        align-items: center;
+    }
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e9ecef;
+        border-radius: 50%;
+        margin-right: 20px;
+        font-size: 2rem;
+        color: #6c757d;
+    }
+    .profile-info {
+        flex-grow: 1;
+    }
+    .points-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+    }
+    .points-circle.high {
+        background-color: #28a745;
+    }
+    .points-circle.medium {
+        background-color: #17a2b8;
+    }
+    .points-circle.low {
+        background-color: #6c757d;
+    }
+    .action-btn {
+        margin-right: 10px;
+    }
+    .purchase-item {
+        border-left: 3px solid #007bff;
+        padding-left:
+        15px;
+        margin-bottom: 15px;
+    }
+    .tab-pane {
+        padding: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Intestazione Cliente -->
+    <div class="client-header">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="profile-section">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h2>{{ client.name }}</h2>
+                        <div class="mt-2">
+                            <span class="badge bg-primary">Cliente</span>
+                            {% if client.loyalty_points > 50 %}
+                                <span class="badge bg-success">Top Cliente</span>
+                            {% endif %}
+                        </div>
+                        <div class="mt-2">
+                            <i class="fas fa-phone text-muted me-2"></i>{{ client.phone }}
+                            {% if client.email %}
+                                <span class="ms-3"><i class="fas fa-envelope text-muted me-2"></i>{{ client.email }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <div class="d-flex justify-content-lg-end align-items-center">
+                    <div class="me-4">
+                        {% if client.loyalty_points >= 50 %}
+                            <div class="points-circle high">
+                        {% elif client.loyalty_points >= 20 %}
+                            <div class="points-circle medium">
+                        {% else %}
+                            <div class="points-circle low">
+                        {% endif %}
+                            <span>{{ client.loyalty_points }}</span>
+                            <small>punti</small>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary action-btn" data-bs-toggle="modal" data-bs-target="#editClientModal">
+                            <i class="fas fa-edit"></i> Modifica
+                        </button>
+                        <button class="btn btn-success action-btn" data-bs-toggle="modal" data-bs-target="#whatsappModal">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenuto principale -->
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Schede -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="clientTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="purchases-tab" data-bs-toggle="tab" data-bs-target="#purchases" type="button" role="tab" aria-controls="purchases" aria-selected="true">
+                                <i class="fas fa-shopping-bag me-1"></i> Acquisti
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">
+                                <i class="fas fa-history me-1"></i> Storico
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes" type="button" role="tab" aria-controls="notes" aria-selected="false">
+                                <i class="fas fa-sticky-note me-1"></i> Note
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="clientTabContent">
+                        <!-- Scheda Acquisti -->
+                        <div class="tab-pane fade show active" id="purchases" role="tabpanel" aria-labelledby="purchases-tab">
+                            {% if client.purchases %}
+                                {% for purchase in client.purchases %}
+                                <div class="purchase-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">{{ purchase.items }}</h6>
+                                            <small class="text-muted">Data: {{ purchase.date }}</small>
+                                        </div>
+                                        <div>
+                                            <span class="h5">€{{ purchase.amount }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <div class="text-end mt-3">
+                                    <strong>Totale speso: </strong>
+                                    <span class="h5">€{{ client.purchases|sum(attribute='amount') }}</span>
+                                </div>
+                            {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+                                    <p>Nessun acquisto registrato per questo cliente.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Scheda Storico -->
+                        <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                            <div class="timeline">
+                                <div class="purchase-item">
+                                    <small class="text-muted">10/03/2025, 15:30</small>
+                                    <p class="mb-1">Aggiornamento punti fedeltà: +5 punti</p>
+                                </div>
+                                <div class="purchase-item">
+                                    <small class="text-muted">01/03/2025, 11:45</small>
+                                    <p class="mb-1">Acquisto completato: €8.50</p>
+                                </div>
+                                <div class="purchase-item">
+                                    <small class="text-muted">15/02/2025, 14:20</small>
+                                    <p class="mb-1">Inviato messaggio WhatsApp: Promozione Weekend</p>
+                                </div>
+                                <div class="purchase-item">
+                                    <small class="text-muted">15/02/2025, 10:15</small>
+                                    <p class="mb-1">Acquisto completato: €6.00</p>
+                                </div>
+                                <div class="purchase-item">
+                                    <small class="text-muted">30/01/2025, 16:30</small>
+                                    <p class="mb-1">Acquisto completato: €10.20</p>
+                                </div>
+                                <div class="purchase-item">
+                                    <small class="text-muted">15/01/2025, 12:00</small>
+                                    <p class="mb-1">Cliente registrato</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Scheda Note -->
+                        <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+                            <div class="mb-3">
+                                <textarea class="form-control" id="clientNotes" rows="4" placeholder="Aggiungi una nota su questo cliente..."></textarea>
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-primary" id="saveNoteBtn">Salva Nota</button>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="saved-notes">
+                                <div class="alert alert-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <strong>Luigi (Operatore)</strong>
+                                        <small class="text-muted">05/03/2025, 14:30</small>
+                                    </div>
+                                    <p class="mb-0">Cliente molto appassionato di gusti alla frutta, specialmente fragola.</p>
+                                </div>
+                                
+                                <div class="alert alert-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <strong>Anna (Operatore)</strong>
+                                        <small class="text-muted">01/02/2025, 10:15</small>
+                                    </div>
+                                    <p class="mb-0">Ha dichiarato di essere allergico alla frutta secca.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Statistiche cliente -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Statistiche Cliente</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label class="form-label">Frequenza Visite</label>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted">Media: 4 visite al mese</small>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Fidelizzazione</label>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted">Cliente dal 15/01/2025</small>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Gusti Preferiti</label>
+                        <canvas id="flavorPreferencesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Azioni rapide -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Azioni Rapide</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addPointsModal">
+                            <i class="fas fa-plus-circle"></i> Aggiungi Punti Fedeltà
+                        </button>
+                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#whatsappModal">
+                            <i class="fab fa-whatsapp"></i> Invia Messaggio WhatsApp
+                        </button>
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-print"></i> Stampa Tessera Fedeltà
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal per modifica cliente -->
+<div class="modal fade" id="editClientModal" tabindex="-1" aria-labelledby="editClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editClientModalLabel">Modifica Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editClientForm">
+                    <div class="mb-3">
+                        <label for="editClientName" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="editClientName" value="{{ client.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editClientPhone" class="form-label">Telefono</label>
+                        <input type="tel" class="form-control" id="editClientPhone" value="{{ client.phone }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editClientEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editClientEmail" value="{{ client.email }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editClientLoyalty" class="form-label">Punti Fedeltà</label>
+                        <input type="number" class="form-control" id="editClientLoyalty" value="{{ client.loyalty_points }}" min="0">
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="editClientWhatsappConsent" checked>
+                            <label class="form-check-label" for="editClientWhatsappConsent">
+                                Consenso Marketing WhatsApp
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" id="updateClientBtn">Aggiorna Cliente</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal per aggiungere punti -->
+<div class="modal fade" id="addPointsModal" tabindex="-1" aria-labelledby="addPointsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPointsModalLabel">Aggiungi Punti Fedeltà</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addPointsForm">
+                    <div class="mb-3">
+                        <label for="pointsAmount" class="form-label">Punti da aggiungere</label>
+                        <input type="number" class="form-control" id="pointsAmount" min="1" value="5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="pointsReason" class="form-label">Motivo</label>
+                        <select class="form-select" id="pointsReason">
+                            <option value="purchase">Acquisto</option>
+                            <option value="birthday">Compleanno</option>
+                            <option value="promo">Promozione</option>
+                            <option value="other">Altro</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="otherReasonContainer" style="display: none;">
+                        <label for="otherReason" class="form-label">Altro motivo</label>
+                        <input type="text" class="form-control" id="otherReason">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" id="savePointsBtn">Aggiungi Punti</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal invio WhatsApp (stesso del client-list ma adattato) -->
+<div class="modal fade" id="whatsappModal" tabindex="-1" aria-labelledby="whatsappModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="whatsappModalLabel">Invia Messaggio a {{ client.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="whatsappForm">
+                    <div class="mb-3">
+                        <label for="whatsappTemplate" class="form-label">Template Messaggio</label>
+                        <select class="form-select" id="whatsappTemplate">
+                            <option value="">Seleziona template...</option>
+                            <option value="welcome">Benvenuto</option>
+                            <option value="promo">Promozione</option>
+                            <option value="birthday">Compleanno</option>
+                            <option value="custom">Messaggio personalizzato</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="customMessageContainer" style="display: none;">
+                        <label for="customMessage" class="form-label">Messaggio Personalizzato</label>
+                        <textarea class="form-control" id="customMessage" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Anteprima Messaggio</label>
+                        <div class="p-3 bg-light rounded" id="messagePreview">
+                            Seleziona un template per visualizzare l'anteprima.
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-success" id="sendWhatsappBtn">
+                    <i class="fab fa-whatsapp"></i> Invia Messaggio
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Grafico gusti preferiti
+        const flavorCtx = document.getElementById('flavorPreferencesChart').getContext('2d');
+        const flavorChart = new Chart(flavorCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Fragola', 'Cioccolato', 'Pistacchio', 'Altri'],
+                datasets: [{
+                    data: [45, 25, 20, 10],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(165, 42, 42, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(54, 162, 235, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(165, 42, 42, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+
+        // Gestione form modifica cliente
+        document.getElementById('updateClientBtn').addEventListener('click', function() {
+            const form = document.getElementById('editClientForm');
+            
+            // Validazione base
+            const name = document.getElementById('editClientName').value;
+            const phone = document.getElementById('editClientPhone').value;
+            
+            if (!name || !phone) {
+                alert('Inserisci nome e telefono per continuare.');
+                return;
+            }
+            
+            const btn = this;
+            const originalText = btn.textContent;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aggiornamento...';
+            btn.disabled = true;
+            
+            // Simulazione aggiornamento
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check"></i> Aggiornato!';
+                
+                setTimeout(function() {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Chiudi il modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editClientModal'));
+                    modal.hide();
+                    
+                    // Aggiorna la pagina con i nuovi dati
+                    document.querySelector('.profile-info h2').textContent = name;
+                    document.querySelector('.profile-info .fa-phone').nextSibling.textContent = ' ' + phone;
+                    
+                    // Notifica l'utente
+                    const alertHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Cliente aggiornato con successo.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                }, 1000);
+            }, 2000);
+        });
+
+        // Gestione form aggiungi punti
+        const pointsReason = document.getElementById('pointsReason');
+        const otherReasonContainer = document.getElementById('otherReasonContainer');
+        
+        pointsReason.addEventListener('change', function() {
+            if (this.value === 'other') {
+                otherReasonContainer.style.display = 'block';
+            } else {
+                otherReasonContainer.style.display = 'none';
+            }
+        });
+        
+        document.getElementById('savePointsBtn').addEventListener('click', function() {
+            const pointsAmount = parseInt(document.getElementById('pointsAmount').value);
+            
+            if (isNaN(pointsAmount) || pointsAmount < 1) {
+                alert('Inserisci un numero valido di punti.');
+                return;
+            }
+            
+            const btn = this;
+            const originalText = btn.textContent;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aggiunta punti...';
+            btn.disabled = true;
+            
+            // Simulazione
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check"></i> Punti aggiunti!';
+                
+                setTimeout(function() {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Chiudi il modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addPointsModal'));
+                    modal.hide();
+                    
+                    // Aggiorna i punti visualizzati
+                    const currentPoints = parseInt(document.querySelector('.points-circle span').textContent);
+                    const newPoints = currentPoints + pointsAmount;
+                    document.querySelector('.points-circle span').textContent = newPoints;
+                    
+                    // Aggiorna la classe del badge punti se necessario
+                    const pointsCircle = document.querySelector('.points-circle');
+                    if (newPoints >= 50 && !pointsCircle.classList.contains('high')) {
+                        pointsCircle.classList.remove('medium', 'low');
+                        pointsCircle.classList.add('high');
+                    } else if (newPoints >= 20 && newPoints < 50 && !pointsCircle.classList.contains('medium')) {
+                        pointsCircle.classList.remove('high', 'low');
+                        pointsCircle.classList.add('medium');
+                    }
+                    
+                    // Notifica l'utente
+                    const alertHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Aggiunti ${pointsAmount} punti fedeltà al cliente.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                    
+                    // Aggiungi una voce allo storico
+                    const today = new Date();
+                    const timeStr = today.toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'});
+                    const dateStr = today.toLocaleDateString('it-IT');
+                    
+                    const historyItem = `
+                        <div class="purchase-item">
+                            <small class="text-muted">${dateStr}, ${timeStr}</small>
+                            <p class="mb-1">Aggiornamento punti fedeltà: +${pointsAmount} punti</p>
+                        </div>
+                    `;
+                    
+                    const historyTab = document.getElementById('history');
+                    historyTab.querySelector('.timeline').insertAdjacentHTML('afterbegin', historyItem);
+                }, 1000);
+            }, 2000);
+        });
+
+        // Gestione note cliente
+        document.getElementById('saveNoteBtn').addEventListener('click', function() {
+            const noteText = document.getElementById('clientNotes').value.trim();
+            
+            if (!noteText) {
+                alert('Inserisci una nota prima di salvare.');
+                return;
+            }
+            
+            const btn = this;
+            const originalText = btn.textContent;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvataggio...';
+            btn.disabled = true;
+            
+            // Simulazione
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check"></i> Salvato!';
+                
+                setTimeout(function() {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Aggiungi la nota all'elenco
+                    const today = new Date();
+                    const timeStr = today.toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'});
+                    const dateStr = today.toLocaleDateString('it-IT');
+                    
+                    const noteItem = `
+                        <div class="alert alert-light">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <strong>${session.username || 'Operatore'}</strong>
+                                <small class="text-muted">${dateStr}, ${timeStr}</small>
+                            </div>
+                            <p class="mb-0">${noteText}</p>
+                        </div>
+                    `;
+                    
+                    const notesContainer = document.querySelector('.saved-notes');
+                    notesContainer.insertAdjacentHTML('afterbegin', noteItem);
+                    
+                    // Pulisci il campo di input
+                    document.getElementById('clientNotes').value = '';
+                    
+                    // Notifica l'utente
+                    const alertHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Nota salvata con successo.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                }, 1000);
+            }, 1500);
+        });
+
+        // Gestione modale WhatsApp
+        const whatsappModal = new bootstrap.Modal(document.getElementById('whatsappModal'));
+        const whatsappTemplate = document.getElementById('whatsappTemplate');
+        const customMessageContainer = document.getElementById('customMessageContainer');
+        const messagePreview = document.getElementById('messagePreview');
+        
+        whatsappTemplate.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                customMessageContainer.style.display = 'block';
+                document.getElementById('customMessage').value = '';
+                messagePreview.innerHTML = 'Scrivi un messaggio personalizzato...';
+            } else {
+                customMessageContainer.style.display = 'none';
+                
+                // Mostra anteprima del template selezionato
+                let previewText = '';
+                const clientName = "{{ client.name }}".split(' ')[0]; // Ottieni solo il nome
+                
+                switch(this.value) {
+                    case 'welcome':
+                        previewText = `Ciao ${clientName}, benvenuto da TU&YO La Tua Yogurteria! Grazie per esserti iscritto.`;
+                        break;
+                    case 'promo':
+                        previewText = `Ciao ${clientName}! Solo per te oggi: sconto del 20% su tutti i nostri yogurt. Ti aspettiamo!`;
+                        break;
+                    case 'birthday':
+                        previewText = `Auguri ${clientName}! Per festeggiare il tuo compleanno, vieni a trovarci per uno yogurt gratuito!`;
+                        break;
+                    default:
+                        previewText = 'Seleziona un template per visualizzare l\'anteprima.';
+                }
+                
+                messagePreview.innerHTML = previewText;
+            }
+        });
+        
+        document.getElementById('customMessage').addEventListener('input', function() {
+            messagePreview.innerHTML = this.value || 'Scrivi un messaggio personalizzato...';
+        });
+        
+        document.getElementById('sendWhatsappBtn').addEventListener('click', function() {
+            if (!whatsappTemplate.value) {
+                alert('Seleziona un template prima di inviare il messaggio.');
+                return;
+            }
+            
+            const btn = this;
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Invio...';
+            btn.disabled = true;
+            
+            // Simulazione invio
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check"></i> Inviato!';
+                
+                setTimeout(function() {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    whatsappModal.hide();
+                    
+                    // Aggiungi una voce allo storico
+                    const today = new Date();
+                    const timeStr = today.toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'});
+                    const dateStr = today.toLocaleDateString('it-IT');
+                    
+                    let templateName = '';
+                    switch(whatsappTemplate.value) {
+                        case 'welcome': templateName = 'Benvenuto'; break;
+                        case 'promo': templateName = 'Promozione'; break;
+                        case 'birthday': templateName = 'Compleanno'; break;
+                        case 'custom': templateName = 'Personalizzato'; break;
+                    }
+                    
+                    const historyItem = `
+                        <div class="purchase-item">
+                            <small class="text-muted">${dateStr}, ${timeStr}</small>
+                            <p class="mb-1">Inviato messaggio WhatsApp: ${templateName}</p>
+                        </div>
+                    `;
+                    
+                    const historyTab = document.getElementById('history');
+                    historyTab.querySelector('.timeline').insertAdjacentHTML('afterbegin', historyItem);
+                    
+                    // Notifica l'utente
+                    const alertHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Messaggio WhatsApp inviato con successo.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                }, 1000);
+            }, 2000);
+        });
+    });
+</script>
+{% endblock %}

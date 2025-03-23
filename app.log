@@ -1,0 +1,72 @@
+2025-03-23 19:57:04,307 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-03-23 19:57:04,490 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.23:5000
+2025-03-23 19:57:04,490 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-23 19:57:04,504 - werkzeug - INFO -  * Restarting with stat
+2025-03-23 19:57:04,713 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-03-23 19:57:04,721 - werkzeug - WARNING -  * Debugger is active!
+2025-03-23 19:57:04,725 - werkzeug - INFO -  * Debugger PIN: 120-212-780
+2025-03-23 19:57:15,019 - werkzeug - ERROR - 192.168.1.23 - - [23/Mar/2025 19:57:15] code 400, message Bad request version ('JJ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06s')
+2025-03-23 19:57:15,019 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:15] "[35m[1m\x16\x03\x01\x06à\x01\x00\x06Ü\x03\x03Ú\x15]\x9e=ó?<5Øû\x01øå7\x9c\x0c¼\x01õ|ðÅ\x8a¿>ÚÏ¡\x0eTm ÙSç]¤7Ä­0#¶|Y\x14;\x1cØóÕÃ"õoDë\x9cÇÏWHÅ7\x00 JJ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06s[0m" HTTPStatus.BAD_REQUEST -
+2025-03-23 19:57:15,020 - werkzeug - ERROR - 192.168.1.23 - - [23/Mar/2025 19:57:15] code 400, message Bad request version ('\x00\x12\x00\x10\x04\x03\x08\x04\x04\x01\x05\x03\x08\x05\x05\x01\x08\x06\x06\x01\x00')
+2025-03-23 19:57:15,021 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:15] "[35m[1m\x16\x03\x01\x06À\x01\x00\x06¼\x03\x03B\x84sÎR¥ö»2/\x11ééo\x12b}\x8a«Á´î\x11Û\x01}\x00.[\x0eüd @:Ú(\x00y`M\x1elî\x08\x1fI®{Z¸á\x00\x00\x05\x82Ì\x00LÚB5ò*\x9c\x00 zz\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x06Szz\x00\x00\x00\x05\x00\x05\x01\x00\x00\x00\x00\x00+\x00\x07\x06úú\x03\x04\x03\x03\x00#\x00\x00\x00-\x00\x02\x01\x01ÿ\x01\x00\x01\x00\x00\x0d\x00\x12\x00\x10\x04\x03\x08\x04\x04\x01\x05\x03\x08\x05\x05\x01\x08\x06\x06\x01\x00[0m" HTTPStatus.BAD_REQUEST -
+2025-03-23 19:57:19,240 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:19] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-23 19:57:19,296 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:19] "GET /login HTTP/1.1" 200 -
+2025-03-23 19:57:19,491 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:19] "GET /static/img/logo.png HTTP/1.1" 200 -
+2025-03-23 19:57:19,505 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:19] "GET /static/css/main.css HTTP/1.1" 200 -
+2025-03-23 19:57:19,521 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:19] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-03-23 19:57:19,931 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:19] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 19:57:42,806 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:42] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+2025-03-23 19:57:42,846 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:42] "GET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-03-23 19:57:42,847 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:42] "GET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-03-23 19:57:42,882 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:42] "GET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-03-23 19:57:42,901 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:42] "[36mGET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-03-23 19:57:42,960 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 19:57:42] "[36mGET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-03-23 20:02:17,067 - werkzeug - INFO -  * Detected change in 'c:\\Users\\pierg\\Desktop\\tu&yoCRM\\app.py', reloading
+2025-03-23 20:02:17,094 - werkzeug - INFO -  * Restarting with stat
+2025-03-23 20:02:17,339 - __main__ - INFO - File users.json creato con utente admin predefinito
+2025-03-23 20:02:17,339 - __main__ - INFO - File settings.json creato con impostazioni predefinite
+2025-03-23 20:02:17,340 - __main__ - INFO - File campaigns.json creato con lista vuota
+2025-03-23 20:02:17,342 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-03-23 20:02:17,350 - werkzeug - WARNING -  * Debugger is active!
+2025-03-23 20:02:17,355 - werkzeug - INFO -  * Debugger PIN: 120-212-780
+2025-03-23 20:02:22,896 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:02:22] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-03-23 20:02:22,934 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:02:22] "GET /dashboard HTTP/1.1" 200 -
+2025-03-23 20:02:23,106 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:02:23] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2025-03-23 20:02:23,109 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:02:23] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-23 20:02:23,110 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:02:23] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2025-03-23 20:02:23,258 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:02:23] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:02:31,382 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:02:31] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:02:34,896 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:02:34] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:03:35,930 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:35] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:03:39,124 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:39] "GET /clients HTTP/1.1" 200 -
+2025-03-23 20:03:39,169 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:39] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2025-03-23 20:03:39,171 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:39] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2025-03-23 20:03:39,172 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:39] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-23 20:03:39,388 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:39] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:03:42,298 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:42] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:03:49,746 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:49] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:03:54,309 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:54] "GET /whatsapp/templates HTTP/1.1" 200 -
+2025-03-23 20:03:54,360 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:54] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2025-03-23 20:03:54,366 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:54] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2025-03-23 20:03:54,368 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:54] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-23 20:03:54,593 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:03:54] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:04:34,849 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:34] "GET /reports/analytics HTTP/1.1" 200 -
+2025-03-23 20:04:34,892 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:34] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2025-03-23 20:04:34,903 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:34] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2025-03-23 20:04:34,906 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:34] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-23 20:04:35,387 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:35] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:04:55,132 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:55] "GET /dashboard HTTP/1.1" 200 -
+2025-03-23 20:04:55,180 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:55] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2025-03-23 20:04:55,183 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:55] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2025-03-23 20:04:55,184 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:55] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-23 20:04:55,446 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:04:55] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:05:00,239 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:05:00] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-23 20:05:05,425 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:05:05] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-03-23 20:05:05,448 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:05:05] "GET /login HTTP/1.1" 200 -
+2025-03-23 20:05:05,489 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:05:05] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
+2025-03-23 20:05:05,493 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:05:05] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2025-03-23 20:05:05,495 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:05:05] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-23 20:05:05,733 - werkzeug - INFO - 192.168.1.23 - - [23/Mar/2025 20:05:05] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -

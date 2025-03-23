@@ -1,0 +1,522 @@
+{% extends "base.html" %}
+
+{% block title %}Clienti - TU&YO CRM{% endblock %}
+
+{% block additional_css %}
+<style>
+    .filter-card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+    }
+    .client-card {
+        transition: transform 0.2s ease;
+        cursor: pointer;
+    }
+    .client-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .search-box {
+        position: relative;
+    }
+    .search-box .clear-search {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+    }
+    .search-results {
+        display: none;
+        position: absolute;
+        width: 100%;
+        max-height: 300px;
+        overflow-y: auto;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 0 0 5px 5px;
+        z-index: 10;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .search-results.show {
+        display: block;
+    }
+    .search-result-item {
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+    }
+    .search-result-item:hover {
+        background-color: #f8f9fa;
+    }
+    .loyalty-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Gestione Clienti</h1>
+        <div>
+            <button class="btn btn-outline-primary me-2" id="syncTilbyBtn">
+                <i class="fas fa-sync-alt"></i> Sincronizza con Tilby
+            </button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">
+                <i class="fas fa-user-plus"></i> Nuovo Cliente
+            </button>
+        </div>
+    </div>
+
+    <!-- Filtri e ricerca -->
+    <div class="card filter-card mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="search-box">
+                        <input type="text" class="form-control" id="searchClient" placeholder="Cerca cliente...">
+                        <span class="clear-search" id="clearSearch"><i class="fas fa-times"></i></span>
+                        <div class="search-results" id="searchResults"></div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <select class="form-select" id="filterLoyalty">
+                                <option value="">Punti fedeltà</option>
+                                <option value="high">Alti (50+)</option>
+                                <option value="medium">Medi (20-49)</option>
+                                <option value="low">Bassi (0-19)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="filterVisit">
+                                <option value="">Ultima visita</option>
+                                <option value="week">Ultima settimana</option>
+                                <option value="month">Ultimo mese</option>
+                                <option value="older">Più di un mese fa</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-secondary w-100" id="resetFilters">
+                                <i class="fas fa-filter"></i> Reset Filtri
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista clienti -->
+    <div class="row" id="clientsList">
+        {% for client in clients %}
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+            <div class="card client-card h-100" onclick="window.location.href='/clients/{{ client.id }}'">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">{{ client.name }}</h5>
+                        {% if client.loyalty_points >= 50 %}
+                            <span class="loyalty-badge bg-success text-white">{{ client.loyalty_points }} pts</span>
+                        {% elif client.loyalty_points >= 20 %}
+                            <span class="loyalty-badge bg-info text-white">{{ client.loyalty_points }} pts</span>
+                        {% else %}
+                            <span class="loyalty-badge bg-secondary text-white">{{ client.loyalty_points }} pts</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-text">
+                        <p class="mb-1">
+                            <i class="fas fa-phone text-muted me-2"></i>{{ client.phone }}
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-calendar-alt text-muted me-2"></i>Ultima visita: {{ client.last_visit }}
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <div class="btn-group w-100" role="group">
+                        <a href="{{ url_for('client_detail', client_id=client.id) }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-user"></i> Dettagli
+                        </a>
+                        <button class="btn btn-sm btn-outline-success whatsapp-btn" data-client-id="{{ client.id }}" data-client-name="{{ client.name }}">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Paginazione -->
+    <nav aria-label="Paginazione clienti" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Precedente</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Successiva</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- Modal per aggiungere un nuovo cliente -->
+<div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addClientModalLabel">Aggiungi Nuovo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addClientForm">
+                    <div class="mb-3">
+                        <label for="clientName" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="clientName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="clientPhone" class="form-label">Telefono</label>
+                        <input type="tel" class="form-control" id="clientPhone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="clientEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="clientEmail">
+                    </div>
+                    <div class="mb-3">
+                        <label for="clientLoyalty" class="form-label">Punti Fedeltà Iniziali</label>
+                        <input type="number" class="form-control" id="clientLoyalty" value="0" min="0">
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="clientWhatsappConsent">
+                            <label class="form-check-label" for="clientWhatsappConsent">
+                                Consenso Marketing WhatsApp
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" id="saveClientBtn">Salva Cliente</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal invio WhatsApp -->
+<div class="modal fade" id="whatsappModal" tabindex="-1" aria-labelledby="whatsappModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="whatsappModalLabel">Invia Messaggio WhatsApp</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="whatsappForm">
+                    <input type="hidden" id="whatsappClientId">
+                    <div class="mb-3">
+                        <label for="whatsappTemplate" class="form-label">Template Messaggio</label>
+                        <select class="form-select" id="whatsappTemplate">
+                            <option value="">Seleziona template...</option>
+                            <option value="welcome">Benvenuto</option>
+                            <option value="promo">Promozione</option>
+                            <option value="birthday">Compleanno</option>
+                            <option value="custom">Messaggio personalizzato</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="customMessageContainer" style="display: none;">
+                        <label for="customMessage" class="form-label">Messaggio Personalizzato</label>
+                        <textarea class="form-control" id="customMessage" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Anteprima Messaggio</label>
+                        <div class="p-3 bg-light rounded" id="messagePreview">
+                            Seleziona un template per visualizzare l'anteprima.
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-success" id="sendWhatsappBtn">
+                    <i class="fab fa-whatsapp"></i> Invia Messaggio
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gestione ricerca
+        const searchInput = document.getElementById('searchClient');
+        const searchResults = document.getElementById('searchResults');
+        const clearSearch = document.getElementById('clearSearch');
+
+        searchInput.addEventListener('focus', function() {
+            if (this.value.length > 0) {
+                searchResults.classList.add('show');
+            }
+        });
+
+        searchInput.addEventListener('blur', function() {
+            // Ritardo per permettere di cliccare sui risultati
+            setTimeout(() => {
+                searchResults.classList.remove('show');
+            }, 200);
+        });
+
+        searchInput.addEventListener('input', function() {
+            if (this.value.length > 2) {
+                // Simula ricerca
+                const mockResults = [
+                    {id: 1, name: 'Mario Rossi', phone: '+39 123 456 7890'},
+                    {id: 2, name: 'Maria Rossi', phone: '+39 123 567 8901'},
+                    {id: 3, name: 'Marco Rossini', phone: '+39 345 678 9012'}
+                ];
+                
+                let resultsHTML = '';
+                mockResults.forEach(client => {
+                    resultsHTML += `
+                        <div class="search-result-item" data-client-id="${client.id}">
+                            <div><strong>${client.name}</strong></div>
+                            <div class="small text-muted">${client.phone}</div>
+                        </div>
+                    `;
+                });
+                
+                searchResults.innerHTML = resultsHTML;
+                searchResults.classList.add('show');
+                
+                // Aggiungi eventi di click ai risultati
+                document.querySelectorAll('.search-result-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const clientId = this.getAttribute('data-client-id');
+                        window.location.href = `/clients/${clientId}`;
+                    });
+                });
+            } else {
+                searchResults.classList.remove('show');
+            }
+        });
+
+        clearSearch.addEventListener('click', function() {
+            searchInput.value = '';
+            searchResults.classList.remove('show');
+        });
+
+        // Gestione filtri
+        const filterLoyalty = document.getElementById('filterLoyalty');
+        const filterVisit = document.getElementById('filterVisit');
+        const resetFilters = document.getElementById('resetFilters');
+
+        function applyFilters() {
+            // In un'implementazione reale, si effettuerebbe una richiesta AJAX
+            // Per ora, simuliamo il filtro con un effetto visivo
+            const cards = document.querySelectorAll('.client-card');
+            
+            cards.forEach(card => {
+                card.closest('.col-xl-3').style.display = 'block';
+            });
+
+            // Aggiungi logica di filtro qui...
+            
+            // Simulazione: nascondi alcune carte in modo casuale
+            if (filterLoyalty.value || filterVisit.value) {
+                const randomCards = Array.from(cards).sort(() => 0.5 - Math.random()).slice(0, 1);
+                randomCards.forEach(card => {
+                    card.closest('.col-xl-3').style.display = 'none';
+                });
+            }
+        }
+
+        filterLoyalty.addEventListener('change', applyFilters);
+        filterVisit.addEventListener('change', applyFilters);
+        
+        resetFilters.addEventListener('click', function() {
+            filterLoyalty.value = '';
+            filterVisit.value = '';
+            
+            const cards = document.querySelectorAll('.client-card');
+            cards.forEach(card => {
+                card.closest('.col-xl-3').style.display = 'block';
+            });
+        });
+
+        // Sincronizzazione con Tilby
+        document.getElementById('syncTilbyBtn').addEventListener('click', function() {
+            const btn = this;
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sincronizzazione...';
+            btn.disabled = true;
+            
+            // Simula richiesta API
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check"></i> Dati sincronizzati!';
+                
+                setTimeout(function() {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    
+                    // Notifica l'utente
+                    const alertHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            I dati sono stati sincronizzati con Tilby.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                }, 2000);
+            }, 2000);
+        });
+
+        // Gestione modale WhatsApp
+        const whatsappModal = new bootstrap.Modal(document.getElementById('whatsappModal'));
+        const whatsappTemplate = document.getElementById('whatsappTemplate');
+        const customMessageContainer = document.getElementById('customMessageContainer');
+        const messagePreview = document.getElementById('messagePreview');
+        const whatsappClientId = document.getElementById('whatsappClientId');
+        
+        document.querySelectorAll('.whatsapp-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const clientId = this.getAttribute('data-client-id');
+                const clientName = this.getAttribute('data-client-name');
+                
+                whatsappClientId.value = clientId;
+                whatsappTemplate.value = '';
+                messagePreview.innerHTML = 'Seleziona un template per visualizzare l\'anteprima.';
+                customMessageContainer.style.display = 'none';
+                
+                document.getElementById('whatsappModalLabel').textContent = `Invia Messaggio a ${clientName}`;
+                
+                whatsappModal.show();
+            });
+        });
+        
+        whatsappTemplate.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                customMessageContainer.style.display = 'block';
+                document.getElementById('customMessage').value = '';
+                messagePreview.innerHTML = 'Scrivi un messaggio personalizzato...';
+            } else {
+                customMessageContainer.style.display = 'none';
+                
+                // Mostra anteprima del template selezionato
+                let previewText = '';
+                switch(this.value) {
+                    case 'welcome':
+                        previewText = 'Ciao [nome], benvenuto da TU&YO La Tua Yogurteria! Grazie per esserti iscritto.';
+                        break;
+                    case 'promo':
+                        previewText = 'Ciao [nome]! Solo per te oggi: sconto del 20% su tutti i nostri yogurt. Ti aspettiamo!';
+                        break;
+                    case 'birthday':
+                        previewText = 'Auguri [nome]! Per festeggiare il tuo compleanno, vieni a trovarci per uno yogurt gratuito!';
+                        break;
+                    default:
+                        previewText = 'Seleziona un template per visualizzare l\'anteprima.';
+                }
+                
+                messagePreview.innerHTML = previewText;
+            }
+        });
+        
+        document.getElementById('customMessage').addEventListener('input', function() {
+            messagePreview.innerHTML = this.value || 'Scrivi un messaggio personalizzato...';
+        });
+        
+        document.getElementById('sendWhatsappBtn').addEventListener('click', function() {
+            if (!whatsappTemplate.value) {
+                alert('Seleziona un template prima di inviare il messaggio.');
+                return;
+            }
+            
+            const btn = this;
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Invio...';
+            btn.disabled = true;
+            
+            // Simula invio
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check"></i> Inviato!';
+                
+                setTimeout(function() {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    whatsappModal.hide();
+                    
+                    // Notifica l'utente
+                    const alertHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Messaggio WhatsApp inviato con successo.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                }, 1000);
+            }, 2000);
+        });
+        
+        // Gestione aggiunta nuovo cliente
+        document.getElementById('saveClientBtn').addEventListener('click', function() {
+            const form = document.getElementById('addClientForm');
+            
+            // Validazione base
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+            
+            if (!name || !phone) {
+                alert('Inserisci nome e telefono per continuare.');
+                return;
+            }
+            
+            const btn = this;
+            const originalText = btn.textContent;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvataggio...';
+            btn.disabled = true;
+            
+            // Simula salvataggio
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check"></i> Salvato!';
+                
+                setTimeout(function() {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Chiudi il modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addClientModal'));
+                    modal.hide();
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Notifica l'utente
+                    const alertHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Cliente ${name} aggiunto con successo.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                }, 1000);
+            }, 2000);
+        });
+    });
+</script>
+{% endblock %}

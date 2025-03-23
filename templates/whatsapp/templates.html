@@ -1,0 +1,837 @@
+{% extends "base.html" %}
+
+{% block title %}Template WhatsApp - TU&YO CRM{% endblock %}
+
+{% block additional_css %}
+<style>
+    .template-card {
+        transition: transform 0.3s;
+        margin-bottom: 20px;
+    }
+    .template-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .template-preview {
+        background-color: #DCF8C6;
+        border-radius: 8px;
+        padding: 15px;
+        position: relative;
+        margin-bottom: 15px;
+    }
+    .template-preview::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid #DCF8C6;
+        left: -10px;
+        top: 15px;
+    }
+    .template-controls {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    .template-variables {
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 10px;
+    }
+    .template-variables code {
+        background-color: #e9ecef;
+        padding: 2px 5px;
+        border-radius: 3px;
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Template Messaggi WhatsApp</h1>
+        <div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTemplateModal">
+                <i class="fas fa-plus"></i> Nuovo Template
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Lista template -->
+            <div class="row" id="templatesList">
+                {% for template in templates %}
+                <div class="col-md-6 mb-4">
+                    <div class="card template-card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">{{ template.name }}</h5>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item edit-template" href="#" data-template-id="{{ template.id }}"><i class="fas fa-edit me-2"></i>Modifica</a></li>
+                                    <li><a class="dropdown-item text-danger delete-template" href="#" data-template-id="{{ template.id }}"><i class="fas fa-trash me-2"></i>Elimina</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="template-preview">
+                                {{ template.text|replace("{name}", "Mario") }}
+                            </div>
+                            
+                            <div class="template-variables">
+                                <small class="text-muted d-block mb-2">Variabili disponibili:</small>
+                                <code>{name}</code>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <div class="template-controls">
+                                <button class="btn btn-sm btn-outline-primary preview-template" data-template-id="{{ template.id }}">
+                                    <i class="fas fa-eye"></i> Anteprima
+                                </button>
+                                <button class="btn btn-sm btn-success send-template" data-template-id="{{ template.id }}">
+                                    <i class="fab fa-whatsapp"></i> Invia
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Guida ai template -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Linee Guida Template</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle me-2"></i>WhatsApp Business API</h6>
+                        <p class="small mb-0">I template creati qui saranno utilizzati per inviare messaggi tramite l'API WhatsApp Business.</p>
+                    </div>
+                    
+                    <h6 class="mt-4">Variabili Disponibili</h6>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <code>{name}</code> - Nome del cliente
+                        </li>
+                        <li class="list-group-item">
+                            <code>{points}</code> - Punti fedeltà attuali
+                        </li>
+                        <li class="list-group-item">
+                            <code>{date}</code> - Data corrente
+                        </li>
+                    </ul>
+                    
+                    <h6 class="mt-4">Consigli Utili</h6>
+                    <ul class="small">
+                        <li>Mantieni i messaggi brevi e diretti</li>
+                        <li>Includi sempre una chiara call-to-action</li>
+                        <li>Personalizza i messaggi usando il nome del cliente</li>
+                        <li>Evita toni troppo commerciali o insistenti</li>
+                    </ul>
+                    
+                    <div class="alert alert-warning mt-3">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <span class="small">Ricorda che i messaggi possono essere inviati solo a clienti che hanno fornito il consenso per le comunicazioni marketing.</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistiche invio -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Statistiche Template</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h6>Template Più Utilizzati</h6>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" style="width: 60%">Promozione (60%)</div>
+                        </div>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-info" style="width: 25%">Benvenuto (25%)</div>
+                        </div>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-primary" style="width: 15%">Compleanno (15%)</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h6>Tasso di Risposta</h6>
+                        <canvas id="responseRateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal per aggiungere un nuovo template -->
+<div class="modal fade" id="addTemplateModal" tabindex="-1" aria-labelledby="addTemplateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTemplateModalLabel">Nuovo Template WhatsApp</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="templateForm">
+                    <div class="mb-3">
+                        <label for="templateName" class="form-label">Nome Template</label>
+                        <input type="text" class="form-control" id="templateName" required>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="templateText" class="form-label">Testo del Messaggio</label>
+                            <textarea class="form-control" id="templateText" rows="5" required></textarea>
+                            <div class="form-text">
+                                Usa <code>{name}</code> per inserire il nome del cliente, <code>{points}</code> per i punti fedeltà e <code>{date}</code> per la data corrente.
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Anteprima</label>
+                            <div class="template-preview" id="livePreview">
+                                L'anteprima apparirà qui mentre scrivi...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Variabili Disponibili</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary insert-variable" data-variable="{name}">
+                                Nome <code>{name}</code>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary insert-variable" data-variable="{points}">
+                                Punti <code>{points}</code>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary insert-variable" data-variable="{date}">
+                                Data <code>{date}</code>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" id="saveTemplateBtn">Salva Template</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal per visualizzare l'anteprima del template -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalLabel">Anteprima Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="p-3 mb-3">
+                    <div style="max-width: 350px; margin: 0 auto;">
+                        <div style="background-color: #128C7E; color: white; padding: 10px; border-radius: 10px 10px 0 0;">
+                            <h6 class="mb-0"><i class="fab fa-whatsapp me-2"></i>WhatsApp</h6>
+                        </div>
+                        <div style="background-color: #E5DDD5; padding: 20px; border-radius: 0 0 10px 10px;">
+                            <div class="d-flex justify-content-end mb-3">
+                                <div style="background-color: #DCF8C6; padding: 10px 15px; border-radius: 10px; max-width: 80%;">
+                                    <p class="mb-0" id="previewText">Testo del template</p>
+                                    <small class="text-end d-block text-muted" style="font-size: 0.7rem;">12:30 ✓✓</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h6>Come apparirà su diversi dispositivi:</h6>
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="fas fa-mobile-alt me-2"></i>Smartphone</h6>
+                        <p class="card-text small" id="previewMobile">Testo del template</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title"><i class="fas fa-desktop me-2"></i>Desktop</h6>
+                        <p class="card-text small" id="previewDesktop">Testo del template</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-success" id="sendFromPreviewBtn">
+                    <i class="fab fa-whatsapp"></i> Invia a Cliente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal per selezione destinatari -->
+<div class="modal fade" id="recipientsModal" tabindex="-1" aria-labelledby="recipientsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="recipientsModalLabel">Seleziona Destinatari</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <h6>Template: <span id="selectedTemplateName">-</span></h6>
+                    <div class="alert alert-secondary">
+                        <span id="selectedTemplateText">-</span>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Filtra Clienti</label>
+                        <div class="input-group mb-2">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Cerca nome o telefono" id="searchRecipients">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Filtri Avanzati</label>
+                        <div class="input-group">
+                            <select class="form-select" id="filterType">
+                                <option value="">Tutti i clienti</option>
+                                <option value="loyal">Clienti fedeli (50+ punti)</option>
+                                <option value="recent">Visite recenti (ultimi 30 giorni)</option>
+                                <option value="inactive">Clienti inattivi (nessuna visita >60 giorni)</option>
+                            </select>
+                            <button class="btn btn-outline-secondary" type="button" id="applyFilterBtn">Applica</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="selectAllRecipients">
+                                        <label class="form-check-label" for="selectAllRecipients">Tutti</label>
+                                    </div>
+                                </th>
+                                <th>Cliente</th>
+                                <th>Telefono</th>
+                                <th>Punti</th>
+                                <th>Ultima Visita</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recipientsList">
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input recipient-check" type="checkbox" value="1">
+                                    </div>
+                                </td>
+                                <td>Mario Rossi</td>
+                                <td>+39 123 456 7890</td>
+                                <td>45</td>
+                                <td>01/03/2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input recipient-check" type="checkbox" value="2">
+                                    </div>
+                                </td>
+                                <td>Anna Verdi</td>
+                                <td>+39 234 567 8901</td>
+                                <td>78</td>
+                                <td>05/03/2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input recipient-check" type="checkbox" value="3">
+                                    </div>
+                                </td>
+                                <td>Luca Bianchi</td>
+                                <td>+39 345 678 9012</td>
+                                <td>12</td>
+                                <td>20/02/2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input recipient-check" type="checkbox" value="4">
+                                    </div>
+                                </td>
+                                <td>Chiara Neri</td>
+                                <td>+39 456 789 0123</td>
+                                <td>42</td>
+                                <td>10/03/2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input recipient-check" type="checkbox" value="5">
+                                    </div>
+                                </td>
+                                <td>Paolo Belli</td>
+                                <td>+39 567 890 1234</td>
+                                <td>65</td>
+                                <td>08/03/2025</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-info-circle me-2"></i>
+                            <span id="selectedCount">0</span> clienti selezionati
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary" id="clearSelectionBtn">Cancella selezione</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-success" id="sendToSelectedBtn">
+                    <i class="fab fa-whatsapp"></i> Invia ai Selezionati
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Grafico tasso di risposta
+        const respChartCtx = document.getElementById('responseRateChart').getContext('2d');
+        const responseChart = new Chart(respChartCtx, {
+            type: 'line',
+            data: {
+                labels: ['Gen', 'Feb', 'Mar'],
+                datasets: [{
+                    label: 'Tasso di Risposta',
+                    data: [45, 60, 72],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gestione form per nuovo template
+        const templateText = document.getElementById('templateText');
+        const livePreview = document.getElementById('livePreview');
+        
+        templateText.addEventListener('input', function() {
+            updateLivePreview();
+        });
+        
+        function updateLivePreview() {
+            let previewText = templateText.value;
+            if (!previewText) {
+                livePreview.innerHTML = "L'anteprima apparirà qui mentre scrivi...";
+                return;
+            }
+            
+            // Sostituisci le variabili con valori di esempio
+            previewText = previewText.replace(/{name}/g, "Mario");
+            previewText = previewText.replace(/{points}/g, "45");
+            previewText = previewText.replace(/{date}/g, new Date().toLocaleDateString('it-IT'));
+            
+            livePreview.innerHTML = previewText;
+        }
+        
+        // Inserimento variabili nel template
+        document.querySelectorAll('.insert-variable').forEach(button => {
+            button.addEventListener('click', function() {
+                const variable = this.getAttribute('data-variable');
+                const cursorPos = templateText.selectionStart;
+                const textBefore = templateText.value.substring(0, cursorPos);
+                const textAfter = templateText.value.substring(cursorPos);
+                
+                templateText.value = textBefore + variable + textAfter;
+                templateText.focus();
+                templateText.selectionStart = templateText.selectionEnd = cursorPos + variable.length;
+                
+                updateLivePreview();
+            });
+        });
+        
+        // Salvataggio del template
+        document.getElementById('saveTemplateBtn').addEventListener('click', function() {
+            const templateName = document.getElementById('templateName').value;
+            const text = templateText.value;
+            
+            if (!templateName || !text) {
+                alert('Compila tutti i campi obbligatori.');
+                return;
+            }
+            
+            const btn = this;
+            const originalText = btn.textContent;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvataggio...';
+            btn.disabled = true;
+            
+            // Simulazione salvataggio
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check"></i> Salvato!';
+                
+                setTimeout(function() {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Aggiungi il nuovo template alla lista
+                    const templateId = Date.now(); // Simula un ID unico
+                    const newTemplate = {
+                        id: templateId,
+                        name: templateName,
+                        text: text
+                    };
+                    
+                    const templatesList = document.getElementById('templatesList');
+                    const templateHTML = `
+                        <div class="col-md-6 mb-4">
+                            <div class="card template-card h-100">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">${newTemplate.name}</h5>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item edit-template" href="#" data-template-id="${newTemplate.id}"><i class="fas fa-edit me-2"></i>Modifica</a></li>
+                                            <li><a class="dropdown-item text-danger delete-template" href="#" data-template-id="${newTemplate.id}"><i class="fas fa-trash me-2"></i>Elimina</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="template-preview">
+                                        ${newTemplate.text.replace(/{name}/g, "Mario")}
+                                    </div>
+                                    
+                                    <div class="template-variables">
+                                        <small class="text-muted d-block mb-2">Variabili disponibili:</small>
+                                        <code>{name}</code>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white">
+                                    <div class="template-controls">
+                                        <button class="btn btn-sm btn-outline-primary preview-template" data-template-id="${newTemplate.id}">
+                                            <i class="fas fa-eye"></i> Anteprima
+                                        </button>
+                                        <button class="btn btn-sm btn-success send-template" data-template-id="${newTemplate.id}">
+                                            <i class="fab fa-whatsapp"></i> Invia
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    templatesList.insertAdjacentHTML('afterbegin', templateHTML);
+                    
+                    // Aggiungi gli event listener al nuovo template
+                    addTemplateEventListeners();
+                    
+                    // Chiudi il modal e pulisci il form
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addTemplateModal'));
+                    modal.hide();
+                    document.getElementById('templateForm').reset();
+                    livePreview.innerHTML = "L'anteprima apparirà qui mentre scrivi...";
+                    
+                    // Notifica l'utente
+                    const alertHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Template "${templateName}" creato con successo.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                }, 1000);
+            }, 1500);
+        });
+        
+        // Funzione per aggiungere event listener ai template
+        function addTemplateEventListeners() {
+            // Preview template
+            document.querySelectorAll('.preview-template').forEach(button => {
+                button.addEventListener('click', function() {
+                    const templateId = this.getAttribute('data-template-id');
+                    const card = this.closest('.template-card');
+                    const templateName = card.querySelector('.card-header h5').textContent;
+                    const templateText = card.querySelector('.template-preview').innerHTML;
+                    
+                    document.getElementById('previewModalLabel').textContent = `Anteprima: ${templateName}`;
+                    document.getElementById('previewText').innerHTML = templateText;
+                    document.getElementById('previewMobile').innerHTML = templateText;
+                    document.getElementById('previewDesktop').innerHTML = templateText;
+                    
+                    const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
+                    previewModal.show();
+                });
+            });
+            
+            // Send template
+            document.querySelectorAll('.send-template').forEach(button => {
+                button.addEventListener('click', function() {
+                    const templateId = this.getAttribute('data-template-id');
+                    const card = this.closest('.template-card');
+                    const templateName = card.querySelector('.card-header h5').textContent;
+                    const templateText = card.querySelector('.template-preview').innerHTML;
+                    
+                    document.getElementById('selectedTemplateName').textContent = templateName;
+                    document.getElementById('selectedTemplateText').innerHTML = templateText;
+                    
+                    const recipientsModal = new bootstrap.Modal(document.getElementById('recipientsModal'));
+                    recipientsModal.show();
+                });
+            });
+            
+            // Edit template
+            document.querySelectorAll('.edit-template').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const templateId = this.getAttribute('data-template-id');
+                    const card = this.closest('.template-card');
+                    const templateName = card.querySelector('.card-header h5').textContent;
+                    const templatePreview = card.querySelector('.template-preview').innerHTML;
+                    
+                    // Converti il testo dell'anteprima nelle variabili originali
+                    let originalText = templatePreview;
+                    originalText = originalText.replace(/Mario/g, "{name}");
+                    
+                    document.getElementById('templateName').value = templateName;
+                    document.getElementById('templateText').value = originalText;
+                    updateLivePreview();
+                    
+                    document.getElementById('addTemplateModalLabel').textContent = "Modifica Template";
+                    document.getElementById('saveTemplateBtn').textContent = "Aggiorna Template";
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('addTemplateModal'));
+                    modal.show();
+                });
+            });
+            
+            // Delete template
+            document.querySelectorAll('.delete-template').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (confirm('Sei sicuro di voler eliminare questo template?')) {
+                        const templateId = this.getAttribute('data-template-id');
+                        const card = this.closest('.col-md-6');
+                        
+                        // Simulazione eliminazione
+                        card.style.opacity = '0.5';
+                        setTimeout(() => {
+                            card.remove();
+                            
+                            // Notifica l'utente
+                            const alertHTML = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    Template eliminato con successo.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            `;
+                            document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                        }, 500);
+                    }
+                });
+            });
+        }
+        
+        // Inizializza gli event listener
+        addTemplateEventListeners();
+        // Gestione selezione destinatari
+    const selectAllCheckbox = document.getElementById('selectAllRecipients');
+    const recipientCheckboxes = document.querySelectorAll('.recipient-check');
+    const selectedCountElement = document.getElementById('selectedCount');
+    
+    function updateSelectedCount() {
+        const selectedCount = document.querySelectorAll('.recipient-check:checked').length;
+        selectedCountElement.textContent = selectedCount;
+    }
+    
+    selectAllCheckbox.addEventListener('change', function() {
+        recipientCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+        updateSelectedCount();
+    });
+    
+    recipientCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateSelectedCount();
+            
+            // Aggiorna lo stato del checkbox "seleziona tutti"
+            const allChecked = document.querySelectorAll('.recipient-check:checked').length === recipientCheckboxes.length;
+            selectAllCheckbox.checked = allChecked;
+        });
+    });
+    
+    document.getElementById('clearSelectionBtn').addEventListener('click', function() {
+        selectAllCheckbox.checked = false;
+        recipientCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        updateSelectedCount();
+    });
+    
+    // Filtro destinatari
+    document.getElementById('applyFilterBtn').addEventListener('click', function() {
+        const filterType = document.getElementById('filterType').value;
+        
+        if (!filterType) {
+            // Mostra tutti
+            document.querySelectorAll('#recipientsList tr').forEach(row => {
+                row.style.display = '';
+            });
+            return;
+        }
+        
+        document.querySelectorAll('#recipientsList tr').forEach(row => {
+            const points = parseInt(row.querySelector('td:nth-child(4)').textContent);
+            const lastVisitText = row.querySelector('td:nth-child(5)').textContent;
+            
+            // Converti la data in formato italiano in un oggetto Date
+            const lastVisitParts = lastVisitText.split('/');
+            const lastVisitDate = new Date(
+                parseInt(lastVisitParts[2]), 
+                parseInt(lastVisitParts[1]) - 1, 
+                parseInt(lastVisitParts[0])
+            );
+            
+            const today = new Date();
+            const daysDiff = Math.floor((today - lastVisitDate) / (1000 * 60 * 60 * 24));
+            
+            switch(filterType) {
+                case 'loyal':
+                    row.style.display = points >= 50 ? '' : 'none';
+                    break;
+                case 'recent':
+                    row.style.display = daysDiff <= 30 ? '' : 'none';
+                    break;
+                case 'inactive':
+                    row.style.display = daysDiff > 60 ? '' : 'none';
+                    break;
+            }
+        });
+    });
+    
+    // Ricerca destinatari
+    document.getElementById('searchRecipients').addEventListener('input', function() {
+        const searchText = this.value.toLowerCase();
+        
+        document.querySelectorAll('#recipientsList tr').forEach(row => {
+            const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const phone = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            
+            if (name.includes(searchText) || phone.includes(searchText)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+    
+    // Invio messaggio ai selezionati
+    document.getElementById('sendToSelectedBtn').addEventListener('click', function() {
+        const selectedCheckboxes = document.querySelectorAll('.recipient-check:checked');
+        
+        if (selectedCheckboxes.length === 0) {
+            alert('Seleziona almeno un destinatario.');
+            return;
+        }
+        
+        const btn = this;
+        const originalText = btn.innerHTML;
+        
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Invio in corso...';
+        btn.disabled = true;
+        
+        // Simulazione invio
+        setTimeout(function() {
+            btn.innerHTML = '<i class="fas fa-check"></i> Invio completato!';
+            
+            setTimeout(function() {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                // Chiudi il modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('recipientsModal'));
+                modal.hide();
+                
+                // Reset selezione
+                selectAllCheckbox.checked = false;
+                recipientCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                updateSelectedCount();
+                
+                // Notifica l'utente
+                const alertHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        Messaggio inviato con successo a ${selectedCheckboxes.length} clienti.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+            }, 1000);
+        }, 2000);
+    });
+    
+    // Invio dal modal di anteprima
+    document.getElementById('sendFromPreviewBtn').addEventListener('click', function() {
+        const recipientsModal = new bootstrap.Modal(document.getElementById('recipientsModal'));
+        const previewModal = bootstrap.Modal.getInstance(document.getElementById('previewModal'));
+        
+        previewModal.hide();
+        
+        // Aggiorna il modal dei destinatari con i dati del template
+        const templateName = document.getElementById('previewModalLabel').textContent.replace('Anteprima: ', '');
+        const templateText = document.getElementById('previewText').innerHTML;
+        
+        document.getElementById('selectedTemplateName').textContent = templateName;
+        document.getElementById('selectedTemplateText').innerHTML = templateText;
+        
+        recipientsModal.show();
+    });
+});
+</script>
+{% endblock %}

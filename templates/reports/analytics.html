@@ -1,0 +1,727 @@
+{% extends "base.html" %}
+
+{% block title %}Analisi - TU&YO CRM{% endblock %}
+
+{% block additional_css %}
+<style>
+    .kpi-card {
+        transition: transform 0.3s;
+    }
+    .kpi-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .kpi-icon {
+        font-size: 2.5rem;
+        opacity: 0.8;
+    }
+    .trend-indicator {
+        font-size: 0.9rem;
+    }
+    .trend-up {
+        color: #28a745;
+    }
+    .trend-down {
+        color: #dc3545;
+    }
+    .chart-container {
+        position: relative;
+        height: 350px;
+        margin-bottom: 20px;
+    }
+    .filter-card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .date-range-label {
+        font-weight: 500;
+        color: #495057;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Analisi e Reportistica</h1>
+        <div>
+            <button class="btn btn-outline-primary me-2" id="printReportBtn">
+                <i class="fas fa-print"></i> Stampa Report
+            </button>
+            <button class="btn btn-primary" id="exportReportBtn">
+                <i class="fas fa-file-export"></i> Esporta Dati
+            </button>
+        </div>
+    </div>
+
+    <!-- Filtri e intervallo date -->
+    <div class="card filter-card mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <label class="date-range-label mb-2">Intervallo Date</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control" id="startDate" value="2025-02-01">
+                        <span class="input-group-text">a</span>
+                        <input type="date" class="form-control" id="endDate" value="2025-03-10">
+                        <button class="btn btn-outline-secondary" type="button" id="applyDateRangeBtn">Applica</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="date-range-label mb-2">Periodi Predefiniti</label>
+                    <select class="form-select" id="predefinedPeriod">
+                        <option value="custom">Personalizzato</option>
+                        <option value="today">Oggi</option>
+                        <option value="yesterday">Ieri</option>
+                        <option value="week">Ultimi 7 giorni</option>
+                        <option value="month">Ultimi 30 giorni</option>
+                        <option value="quarter">Ultimo trimestre</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="date-range-label mb-2">Confronta Con</label>
+                    <select class="form-select" id="comparePeriod">
+                        <option value="none">Nessun confronto</option>
+                        <option value="previous">Periodo precedente</option>
+                        <option value="year">Stesso periodo anno scorso</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card kpi-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Vendite Totali</h6>
+                            <h2 class="mb-0">€1,250</h2>
+                        </div>
+                        <div class="kpi-icon text-primary">
+                            <i class="fas fa-euro-sign"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="trend-indicator trend-up">
+                            <i class="fas fa-arrow-up"></i> +12%
+                        </span>
+                        <span class="text-muted ms-2">vs periodo precedente</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card kpi-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Visite Clienti</h6>
+                            <h2 class="mb-0">185</h2>
+                        </div>
+                        <div class="kpi-icon text-success">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="trend-indicator trend-up">
+                            <i class="fas fa-arrow-up"></i> +8%
+                        </span>
+                        <span class="text-muted ms-2">vs periodo precedente</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card kpi-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Spesa Media</h6>
+                            <h2 class="mb-0">€6.75</h2>
+                        </div>
+                        <div class="kpi-icon text-info">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="trend-indicator trend-up">
+                            <i class="fas fa-arrow-up"></i> +4%
+                        </span>
+                        <span class="text-muted ms-2">vs periodo precedente</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card kpi-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted">Nuovi Clienti</h6>
+                            <h2 class="mb-0">24</h2>
+                        </div>
+                        <div class="kpi-icon text-warning">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="trend-indicator trend-down">
+                            <i class="fas fa-arrow-down"></i> -3%
+                        </span>
+                        <span class="text-muted ms-2">vs periodo precedente</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grafici -->
+    <div class="row">
+        <!-- Grafico vendite per giorno -->
+        <div class="col-lg-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Andamento Vendite</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="salesChartDropdown" data-bs-toggle="dropdown">
+                            Giornaliero
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Giornaliero</a></li>
+                            <li><a class="dropdown-item" href="#">Settimanale</a></li>
+                            <li><a class="dropdown-item" href="#">Mensile</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Grafico distribuzione vendite -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">Distribuzione Vendite</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="salesDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Grafico orari di affluenza -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">Orari di Affluenza</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="hourlyTrafficChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Grafico gusti più venduti -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Gusti Più Venduti</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="flavorChartDropdown" data-bs-toggle="dropdown">
+                            Top 5
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Top 5</a></li>
+                            <li><a class="dropdown-item" href="#">Top 10</a></li>
+                            <li><a class="dropdown-item" href="#">Tutti</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="flavorChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabella dettaglio vendite -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Dettaglio Vendite</h5>
+            <div class="input-group" style="width: 250px;">
+                <input type="text" class="form-control form-control-sm" placeholder="Cerca...">
+                <button class="btn btn-outline-secondary btn-sm" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Prodotto</th>
+                            <th>Quantità</th>
+                            <th class="text-end">Importo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>10/03/2025</td>
+                            <td>Mario Rossi</td>
+                            <td>Yogurt Fragola Grande</td>
+                            <td>1</td>
+                            <td class="text-end">€8.50</td>
+                        </tr>
+                        <tr>
+                            <td>10/03/2025</td>
+                            <td>Anna Verdi</td>
+                            <td>Yogurt Cioccolato Grande</td>
+                            <td>1</td>
+                            <td class="text-end">€8.50</td>
+                        </tr>
+                        <tr>
+                            <td>10/03/2025</td>
+                            <td>Luca Bianchi</td>
+                            <td>Yogurt Pistacchio Medio</td>
+                            <td>1</td>
+                            <td class="text-end">€6.00</td>
+                        </tr>
+                        <tr>
+                            <td>09/03/2025</td>
+                            <td>Paolo Belli</td>
+                            <td>Yogurt Frutti di Bosco Grande</td>
+                            <td>1</td>
+                            <td class="text-end">€8.50</td>
+                        </tr>
+                        <tr>
+                            <td>09/03/2025</td>
+                            <td>Chiara Neri</td>
+                            <td>Yogurt Vaniglia Medio</td>
+                            <td>1</td>
+                            <td class="text-end">€6.00</td>
+                        </tr>
+                        <tr>
+                            <td>09/03/2025</td>
+                            <td>Giovanni Verdi</td>
+                            <td>Yogurt Stracciatella Grande</td>
+                            <td>1</td>
+                            <td class="text-end">€8.50</td>
+                        </tr>
+                        <tr>
+                            <td>09/03/2025</td>
+                            <td>Marco Rossi</td>
+                            <td>Yogurt Mango Piccolo</td>
+                            <td>1</td>
+                            <td class="text-end">€4.50</td>
+                        </tr>
+                        <tr>
+                            <td>08/03/2025</td>
+                            <td>Laura Bianchi</td>
+                            <td>Yogurt Cocco Grande</td>
+                            <td>1</td>
+                            <td class="text-end">€8.50</td>
+                        </tr>
+                        <tr>
+                            <td>08/03/2025</td>
+                            <td>Roberto Esposito</td>
+                            <td>Yogurt Caramello Medio</td>
+                            <td>1</td>
+                            <td class="text-end">€6.00</td>
+                        </tr>
+                        <tr>
+                            <td>08/03/2025</td>
+                            <td>Francesca Ricci</td>
+                            <td>Yogurt Banana Piccolo</td>
+                            <td>1</td>
+                            <td class="text-end">€4.50</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <nav aria-label="Paginazione vendite" class="mt-3">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Precedente</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Successiva</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Modal esportazione report -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exportModalLabel">Esporta Report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="exportForm">
+                    <div class="mb-3">
+                        <label for="exportFormat" class="form-label">Formato File</label>
+                        <select class="form-select" id="exportFormat">
+                            <option value="excel">Excel (.xlsx)</option>
+                            <option value="csv">CSV (.csv)</option>
+                            <option value="pdf">PDF (.pdf)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exportContent" class="form-label">Contenuto</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="summary" id="exportSummary" checked>
+                            <label class="form-check-label" for="exportSummary">
+                                Riepilogo
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="sales" id="exportSales" checked>
+                            <label class="form-check-label" for="exportSales">
+                                Dettaglio vendite
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="customers" id="exportCustomers" checked>
+                            <label class="form-check-label" for="exportCustomers">
+                                Dati clienti
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="products" id="exportProducts" checked>
+                            <label class="form-check-label" for="exportProducts">
+                                Statistiche prodotti
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" id="confirmExportBtn">Esporta</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Grafico andamento vendite
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(salesCtx, {
+            type: 'line',
+            data: {
+                labels: ['01/03', '02/03', '03/03', '04/03', '05/03', '06/03', '07/03', '08/03', '09/03', '10/03'],
+                datasets: [{
+                    label: 'Vendite (€)',
+                    data: [85, 120, 90, 110, 95, 130, 140, 125, 105, 150],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return `€${context.raw}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '€' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Grafico distribuzione vendite
+        const distributionCtx = document.getElementById('salesDistributionChart').getContext('2d');
+        const distributionChart = new Chart(distributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Yogurt Grande', 'Yogurt Medio', 'Yogurt Piccolo', 'Topping Extra'],
+                datasets: [{
+                    data: [45, 30, 15, 10],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Grafico orari di affluenza
+        const hourlyCtx = document.getElementById('hourlyTrafficChart').getContext('2d');
+        const hourlyChart = new Chart(hourlyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['10-12', '12-14', '14-16', '16-18', '18-20', '20-22'],
+                datasets: [{
+                    label: 'Numero Visite',
+                    data: [15, 35, 25, 30, 45, 35],
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Grafico gusti più venduti
+        const flavorCtx = document.getElementById('flavorChart').getContext('2d');
+        const flavorChart = new Chart(flavorCtx, {
+            type: 'horizontalBar',
+            type: 'bar',
+            data: {
+                labels: ['Fragola', 'Cioccolato', 'Pistacchio', 'Vaniglia', 'Mango'],
+                datasets: [{
+                    label: 'Quantità Vendute',
+                    data: [42, 38, 30, 25, 20],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(165, 42, 42, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(255, 159, 64, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(165, 42, 42, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Gestione esportazione
+        document.getElementById('exportReportBtn').addEventListener('click', function() {
+            const exportModal = new bootstrap.Modal(document.getElementById('exportModal'));
+            exportModal.show();
+        });
+
+        document.getElementById('confirmExportBtn').addEventListener('click', function() {
+            const btn = this;
+            const originalText = btn.textContent;
+            const exportFormat = document.getElementById('exportFormat').value;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Elaborazione...';
+            btn.disabled = true;
+            
+            // Simulazione esportazione
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Completato!';
+                
+                setTimeout(function() {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Chiudi il modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('exportModal'));
+                    modal.hide();
+                    
+                    // Notifica l'utente
+                    const alertHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Report esportato con successo in formato ${exportFormat.toUpperCase()}.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+                }, 1000);
+            }, 2000);
+        });
+
+        // Gestione stampa report
+        document.getElementById('printReportBtn').addEventListener('click', function() {
+            // In un'applicazione reale, questa funzione preparerebbe una versione stampabile
+            // Per ora, simuliamo solo un messaggio di conferma
+            alert('Preparazione versione stampabile...');
+            window.print();
+        });
+
+        // Gestione dei periodi predefiniti
+        document.getElementById('predefinedPeriod').addEventListener('change', function() {
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            
+            const today = new Date();
+            let startDate = new Date();
+            let endDate = new Date();
+            
+            switch(this.value) {
+                case 'today':
+                    // Start e end sono entrambi oggi
+                    break;
+                case 'yesterday':
+                    startDate.setDate(today.getDate() - 1);
+                    endDate.setDate(today.getDate() - 1);
+                    break;
+                case 'week':
+                    startDate.setDate(today.getDate() - 7);
+                    break;
+                case 'month':
+                    startDate.setDate(today.getDate() - 30);
+                    break;
+                case 'quarter':
+                    startDate.setDate(today.getDate() - 90);
+                    break;
+                case 'custom':
+                    // Non fare nulla, lascia i valori correnti
+                    return;
+            }
+            
+            // Formatta le date per l'input date (YYYY-MM-DD)
+            startDateInput.value = startDate.toISOString().split('T')[0];
+            endDateInput.value = endDate.toISOString().split('T')[0];
+            
+            // Aggiorna i grafici (simulato)
+            simulateDataUpdate();
+        });
+
+        // Applicazione intervallo di date personalizzato
+        document.getElementById('applyDateRangeBtn').addEventListener('click', function() {
+            // In un'applicazione reale, qui aggiorneremmo i dati in base all'intervallo selezionato
+            document.getElementById('predefinedPeriod').value = 'custom';
+            
+            // Simuliamo l'aggiornamento dei dati
+            simulateDataUpdate();
+        });
+
+        // Funzione di simulazione aggiornamento dati
+        function simulateDataUpdate() {
+            const btn = document.getElementById('applyDateRangeBtn');
+            const originalText = btn.textContent;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+            
+            // Simulazione caricamento
+            setTimeout(function() {
+                // Aggiorna i dati con valori casuali
+                salesChart.data.datasets[0].data = Array.from({length: 10}, () => Math.floor(Math.random() * 80) + 70);
+                salesChart.update();
+                
+                hourlyChart.data.datasets[0].data = Array.from({length: 6}, () => Math.floor(Math.random() * 30) + 15);
+                hourlyChart.update();
+                
+                // Notifica l'utente
+                btn.textContent = originalText;
+                btn.disabled = false;
+                
+                const alertHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        Dati aggiornati per il periodo selezionato.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+            }, 1500);
+        }
+    });
+</script>
+{% endblock %}

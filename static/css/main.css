@@ -1,0 +1,338 @@
+/* 
+* TU&YO CRM - Stile principale
+* Sviluppato da Tommaso Bona
+* 2025
+*/
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --whatsapp-color: #25D366;
+    --yogurt-color-pink: #ff8fbe;
+    --yogurt-color-green: #9ddb7f;
+    --yogurt-color-blue: #7fb2db;
+  }
+  
+  /* Stili generali */
+  body {
+    font-family: 'Nunito', 'Segoe UI', 'Roboto', sans-serif;
+    color: #333;
+    background-color: #f5f7fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .container-fluid {
+    padding: 20px;
+  }
+  
+  /* Navbar */
+  .navbar-dark.bg-primary {
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand img {
+    margin-right: 10px;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+  }
+  
+  .navbar-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+  }
+  
+  /* Card */
+  .card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 15px 20px;
+    font-weight: 600;
+    border-radius: 10px 10px 0 0 !important;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-footer {
+    background-color: white;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 10px 10px !important;
+  }
+  
+  /* Bottoni */
+  .btn {
+    border-radius: 5px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+  
+  .btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+  
+  .btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Form */
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.2s;
+  }
+  
+  .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .form-select {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    transition: border-color 0.2s;
+  }
+  
+  .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Alert */
+  .alert {
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border: none;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+  }
+  
+  .alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  /* Badge */
+  .badge {
+    padding: 0.35em 0.65em;
+    font-weight: 600;
+    border-radius: 5px;
+  }
+  
+  /* Table */
+  .table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+  }
+  
+  .table th {
+    font-weight: 600;
+    border-top: none;
+    background-color: #f8f9fa;
+  }
+  
+  .table td {
+    vertical-align: middle;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  
+  /* Utilities */
+  .text-primary {
+    color: var(--primary-color) !important;
+  }
+  
+  .text-success {
+    color: var(--success-color) !important;
+  }
+  
+  .text-info {
+    color: var(--info-color) !important;
+  }
+  
+  .text-warning {
+    color: var(--warning-color) !important;
+  }
+  
+  .text-danger {
+    color: var(--danger-color) !important;
+  }
+  
+  .bg-primary {
+    background-color: var(--primary-color) !important;
+  }
+  
+  .bg-success {
+    background-color: var(--success-color) !important;
+  }
+  
+  .bg-info {
+    background-color: var(--info-color) !important;
+  }
+  
+  .bg-warning {
+    background-color: var(--warning-color) !important;
+  }
+  
+  .bg-danger {
+    background-color: var(--danger-color) !important;
+  }
+  
+  /* Footer */
+  .footer {
+    margin-top: auto;
+    background-color: #f8f9fa;
+    padding: 1rem 0;
+    border-top: 1px solid #eaeaea;
+  }
+  
+  /* WhatsApp specifici */
+  .whatsapp-badge {
+    background-color: var(--whatsapp-color);
+  }
+  
+  .whatsapp-text {
+    color: var(--whatsapp-color);
+  }
+  
+  .btn-whatsapp {
+    background-color: var(--whatsapp-color);
+    border-color: var(--whatsapp-color);
+    color: white;
+  }
+  
+  .btn-whatsapp:hover {
+    background-color: #128C7E;
+    border-color: #128C7E;
+    color: white;
+  }
+  
+  /* Responsive */
+  @media (max-width: 992px) {
+    .card-header {
+      padding: 12px 15px;
+    }
+    
+    .card-body {
+      padding: 15px;
+    }
+    
+    .table th, .table td {
+      padding: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container-fluid {
+      padding: 15px;
+    }
+    
+    .display-4, .display-5, .display-6 {
+      font-size: calc(1.2rem + 1.5vw);
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  /* Animazioni */
+  .fade-in {
+    animation: fadeIn 0.5s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .bounce-in {
+    animation: bounceIn 0.5s;
+  }
+  
+  @keyframes bounceIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    60% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); }
+  }

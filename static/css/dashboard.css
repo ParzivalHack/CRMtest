@@ -1,0 +1,319 @@
+/**
+ * TU&YO CRM - Stili specifici per la dashboard
+ * Sviluppato da Tommaso Bona
+ * 2025
+ */
+
+/* Stili per le card KPI */
+.kpi-card {
+    transition: all 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-icon {
+    font-size: 2.5rem;
+    opacity: 0.8;
+    color: var(--primary-color);
+}
+
+.kpi-card h2 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Indicatori di tendenza */
+.trend-indicator {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.trend-up {
+    color: var(--success-color);
+}
+
+.trend-down {
+    color: var(--danger-color);
+}
+
+.trend-neutral {
+    color: var(--secondary-color);
+}
+
+.trend-indicator i {
+    margin-right: 5px;
+}
+
+/* Contenitori grafici */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+/* Card attività recenti */
+.recent-activities {
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.recent-activities::-webkit-scrollbar {
+    width: 6px;
+}
+
+.recent-activities::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.recent-activities::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.recent-activities::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+.activity-item {
+    padding: 12px 15px;
+    border-left: 3px solid var(--primary-color);
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.2s ease;
+}
+
+.activity-item:hover {
+    background-color: #f0f1f2;
+}
+
+.activity-item small {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Stili per tabelle in dashboard */
+.dashboard-table th {
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+.dashboard-table tr:hover {
+    background-color: rgba(0, 123, 255, 0.03);
+}
+
+/* Azioni rapide */
+.quick-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 15px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+    margin-bottom: 15px;
+    text-decoration: none;
+    color: #333;
+}
+
+.quick-action:hover {
+    background-color: #e9ecef;
+    transform: translateY(-3px);
+    color: var(--primary-color);
+}
+
+.quick-action i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+/* Badge personalizzati */
+.badge-customer-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 50px;
+}
+
+/* Calendario */
+.calendar-event {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+}
+
+.calendar-event.birthday {
+    background-color: var(--success-color);
+}
+
+.calendar-event.promo {
+    background-color: var(--warning-color);
+    color: #343a40;
+}
+
+/* Stili per componenti con animazione */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Media queries */
+@media (max-width: 992px) {
+    .kpi-card h2 {
+        font-size: 1.5rem;
+    }
+    
+    .kpi-icon {
+        font-size: 2rem;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .quick-action {
+        padding: 15px 10px;
+    }
+    
+    .quick-action i {
+        font-size: 1.5rem;
+    }
+    
+    .kpi-card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Stili specifici per yogurteria */
+.yogurt-bg-pink {
+    background-color: var(--yogurt-color-pink);
+    color: #fff;
+}
+
+.yogurt-bg-green {
+    background-color: var(--yogurt-color-green);
+    color: #333;
+}
+
+.yogurt-bg-blue {
+    background-color: var(--yogurt-color-blue);
+    color: #fff;
+}
+
+/* Stili per il pannello delle notifiche */
+.notification-panel {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    transform: translateX(110%);
+    transition: transform 0.3s ease;
+}
+
+.notification-panel.show {
+    transform: translateX(0);
+}
+
+.notification-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-body {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+    background-color: #f8f9fa;
+}
+
+.notification-item.unread {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.notification-item .notification-time {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+/* Loader per caricamento dati */
+.data-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    flex-direction: column;
+}
+
+.loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 123, 255, 0.2);
+    border-left-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Stili per il widget meteo (futuro) */
+.weather-widget {
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+
+.weather-widget .temp {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.weather-widget .condition {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
