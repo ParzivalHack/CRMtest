@@ -6,6 +6,7 @@ import time
 from datetime import datetime, timedelta
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+import requests
 
 # Importa i nuovi moduli per l'integrazione Tilby
 from tilby_api import get_tilby_api_client, TilbyAPIError
@@ -404,9 +405,11 @@ def page_not_found(e):
     return render_template('errors/404.html'), 404
 
 # Avvia la sincronizzazione all'avvio dell'applicazione
-@app.before_first_request
-def before_first_request():
-    """Esegue operazioni prima della prima richiesta"""
+
+# Con questo approccio
+@app.route('/initialize', methods=['GET'])
+def initialize_app():
+    """Endpoint per inizializzare l'applicazione"""
     logger.info("Avvio sincronizzazione iniziale...")
     try:
         # Esegui una sincronizzazione incrementale all'avvio
@@ -418,9 +421,25 @@ def before_first_request():
         
         # Avvia il thread di sincronizzazione periodica
         start_sync_thread()
+        
+        return jsonify({"success": True, "message": "Inizializzazione completata"})
     except Exception as e:
         logger.error(f"Errore durante la sincronizzazione iniziale: {str(e)}")
-        flash(f'Errore durante la sincronizzazione: {str(e)}', 'danger')
+        return jsonify({"success": False, "message": f"Errore: {str(e)}"}), 500
+
+# E poi aggiungi il nuovo metodo per eseguire l'inizializzazione all'avvio
+with app.app_context():
+    # Avvia sincronizzazione all'avvio dell'applicazione
+    # Questa sezione viene eseguita quando l'app viene avviata, non ad ogni richiesta
+    @app.after_request
+    def after_request_func(response):
+        # Verifica se è la prima richiesta
+        if not getattr(app, '_got_first_request', False):
+            # Imposta il flag per evitare che venga eseguito più volte
+            app._got_first_request = True
+            # Esegui l'inizializzazione in un thread separato per non bloccare la risposta
+            threading.Thread(target=lambda: requests.get(f"http://localhost:{app.config.get('PORT', 5000)}/initialize")).start()
+        return response
 
 # Avvio dell'applicazione
 if __name__ == '__main__':
