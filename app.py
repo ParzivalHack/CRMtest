@@ -280,25 +280,117 @@ def whatsapp_campaigns():
 @app.route('/reports/analytics')
 @login_required
 def analytics():
-    # Calcola statistiche reali
-    customer_stats = get_customer_stats()
-    product_stats = get_product_stats()
+    try:
+        # Periodo corrente (ultimi 30 giorni)
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=30)
+        
+        # Periodo precedente (30 giorni precedenti agli ultimi 30)
+        prev_end_date = start_date
+        prev_start_date = prev_end_date - timedelta(days=30)
+        
+        # Formatta le date per il confronto
+        current_period = {
+            'start': start_date.strftime('%Y-%m-%d'),
+            'end': end_date.strftime('%Y-%m-%d')
+        }
+        previous_period = {
+            'start': prev_start_date.strftime('%Y-%m-%d'),
+            'end': prev_end_date.strftime('%Y-%m-%d')
+        }
+        
+        # Recupera le transazioni dai file JSON
+        transactions_file = os.path.join('data', 'transactions.json')
+        if os.path.exists(transactions_file):
+            with open(transactions_file, 'r', encoding='utf-8') as f:
+                transactions_data = json.load(f)
+                transactions = transactions_data.get('transactions', [])
+        else:
+            transactions = []
+        
+        # Filtra transazioni per periodo corrente e precedente
+        current_transactions = [t for t in transactions if current_period['start'] <= t.get('date', '') <= current_period['end']]
+        previous_transactions = [t for t in transactions if previous_period['start'] <= t.get('date', '') <= previous_period['end']]
+        
+        # Calcola statistiche per il periodo corrente
+        current_stats = {
+            'sales': sum(t.get('total_amount', 0) for t in current_transactions),
+            'visits': len(set(t.get('customer_id') for t in current_transactions)),
+            'new_clients': 0,  # Questo richiederà un calcolo più complesso
+            'avg_spending': 0
+        }
+        
+        if len(current_transactions) > 0:
+            current_stats['avg_spending'] = current_stats['sales'] / len(current_transactions)
+        
+        # Calcola statistiche per il periodo precedente
+        previous_stats = {
+            'sales': sum(t.get('total_amount', 0) for t in previous_transactions),
+            'visits': len(set(t.get('customer_id') for t in previous_transactions)),
+            'avg_spending': 0
+        }
+        
+        if len(previous_transactions) > 0:
+            previous_stats['avg_spending'] = previous_stats['sales'] / len(previous_transactions)
+        
+        # Funzione per calcolare il trend
+        def calculate_trend(current, previous):
+            if previous == 0:
+                return 0  # Evita divisione per zero
+            return round(((current - previous) / previous) * 100)
+        
+        # Calcola trend
+        trend_stats = {
+            'trend_sales': calculate_trend(current_stats['sales'], previous_stats['sales']),
+            'trend_visits': calculate_trend(current_stats['visits'], previous_stats['visits']),
+            'trend_spending': calculate_trend(current_stats['avg_spending'], previous_stats['avg_spending']),
+            'trend_clients': 0  # Verrà calcolato con dati reali
+        }
+        
+        # Recupera statistiche prodotti
+        product_stats = get_product_stats()
+        
+        # Prepara i dati per la vista
+        analytics_data = {
+            'total_sales': f"€{current_stats['sales']:.2f}",
+            'total_visits': current_stats['visits'],
+            'avg_spending': f"€{current_stats['avg_spending']:.2f}",
+            'new_clients': current_stats['new_clients'],
+            'trend_sales': trend_stats['trend_sales'],
+            'trend_visits': trend_stats['trend_visits'],
+            'trend_spending': trend_stats['trend_spending'],
+            'trend_clients': trend_stats['trend_clients'],
+            'client_growth': [],
+            'monthly_visits': [],
+            'popular_products': []
+        }
+        
+        # Aggiungi i prodotti più popolari
+        for product in product_stats.get('top_products', [])[:5]:
+            analytics_data['popular_products'].append({
+                'name': product.get('name', 'Prodotto'),
+                'percentage': (product.get('quantity', 0) / (product_stats.get('total_products_sold', 1) or 1)) * 100
+            })
+        
+        return render_template('reports/analytics.html', analytics=analytics_data)
     
-    # Prepara i dati per la vista
-    analytics_data = {
-        'client_growth': [],  # Andrebbe calcolato in base alle date di registrazione
-        'monthly_visits': [],  # Andrebbe calcolato in base alle transazioni per mese
-        'popular_products': []  # Prodotti più venduti
-    }
-    
-    # Aggiungi i prodotti più popolari
-    for product in product_stats.get('top_products', [])[:5]:
-        analytics_data['popular_products'].append({
-            'name': product.get('name', 'Prodotto'),
-            'percentage': (product.get('quantity', 0) / product_stats.get('total_products_sold', 1)) * 100
-        })
-    
-    return render_template('reports/analytics.html', analytics=analytics_data)
+    except Exception as e:
+        logger.error(f"Errore nel calcolo delle statistiche: {str(e)}")
+        # In caso di errore, mostra valori predefiniti
+        analytics_data = {
+            'total_sales': '€0.00',
+            'total_visits': 0,
+            'avg_spending': '€0.00',
+            'new_clients': 0,
+            'trend_sales': 0,
+            'trend_visits': 0,
+            'trend_spending': 0,
+            'trend_clients': 0,
+            'client_growth': [],
+            'monthly_visits': [],
+            'popular_products': []
+        }
+        return render_template('reports/analytics.html', analytics=analytics_data)
 
 # API endpoints per operazioni AJAX
 @app.route('/api/clients/search', methods=['GET'])

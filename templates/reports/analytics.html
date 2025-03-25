@@ -99,16 +99,26 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h6 class="text-muted">Vendite Totali</h6>
-                            <h2 class="mb-0">€1,250</h2>
+                            <h2 class="mb-0">{{ analytics.total_sales|default('€0') }}</h2>
                         </div>
                         <div class="kpi-icon text-primary">
                             <i class="fas fa-euro-sign"></i>
                         </div>
                     </div>
                     <div class="mt-3">
+                        {% if analytics.trend_sales > 0 %}
                         <span class="trend-indicator trend-up">
-                            <i class="fas fa-arrow-up"></i> +12%
+                            <i class="fas fa-arrow-up"></i> +{{ analytics.trend_sales }}%
                         </span>
+                        {% elif analytics.trend_sales < 0 %}
+                        <span class="trend-indicator trend-down">
+                            <i class="fas fa-arrow-down"></i> {{ analytics.trend_sales }}%
+                        </span>
+                        {% else %}
+                        <span class="trend-indicator">
+                            <i class="fas fa-minus"></i> 0%
+                        </span>
+                        {% endif %}
                         <span class="text-muted ms-2">vs periodo precedente</span>
                     </div>
                 </div>
@@ -121,16 +131,26 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h6 class="text-muted">Visite Clienti</h6>
-                            <h2 class="mb-0">185</h2>
+                            <h2 class="mb-0">{{ analytics.total_visits|default('0') }}</h2>
                         </div>
                         <div class="kpi-icon text-success">
                             <i class="fas fa-users"></i>
                         </div>
                     </div>
                     <div class="mt-3">
+                        {% if analytics.trend_visits > 0 %}
                         <span class="trend-indicator trend-up">
-                            <i class="fas fa-arrow-up"></i> +8%
+                            <i class="fas fa-arrow-up"></i> +{{ analytics.trend_visits }}%
                         </span>
+                        {% elif analytics.trend_visits < 0 %}
+                        <span class="trend-indicator trend-down">
+                            <i class="fas fa-arrow-down"></i> {{ analytics.trend_visits }}%
+                        </span>
+                        {% else %}
+                        <span class="trend-indicator">
+                            <i class="fas fa-minus"></i> 0%
+                        </span>
+                        {% endif %}
                         <span class="text-muted ms-2">vs periodo precedente</span>
                     </div>
                 </div>
@@ -143,16 +163,26 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h6 class="text-muted">Spesa Media</h6>
-                            <h2 class="mb-0">€6.75</h2>
+                            <h2 class="mb-0">{{ analytics.avg_spending|default('€0') }}</h2>
                         </div>
                         <div class="kpi-icon text-info">
                             <i class="fas fa-shopping-cart"></i>
                         </div>
                     </div>
                     <div class="mt-3">
+                        {% if analytics.trend_spending > 0 %}
                         <span class="trend-indicator trend-up">
-                            <i class="fas fa-arrow-up"></i> +4%
+                            <i class="fas fa-arrow-up"></i> +{{ analytics.trend_spending }}%
                         </span>
+                        {% elif analytics.trend_spending < 0 %}
+                        <span class="trend-indicator trend-down">
+                            <i class="fas fa-arrow-down"></i> {{ analytics.trend_spending }}%
+                        </span>
+                        {% else %}
+                        <span class="trend-indicator">
+                            <i class="fas fa-minus"></i> 0%
+                        </span>
+                        {% endif %}
                         <span class="text-muted ms-2">vs periodo precedente</span>
                     </div>
                 </div>
@@ -165,16 +195,26 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h6 class="text-muted">Nuovi Clienti</h6>
-                            <h2 class="mb-0">24</h2>
+                            <h2 class="mb-0">{{ analytics.new_clients|default('0') }}</h2>
                         </div>
                         <div class="kpi-icon text-warning">
                             <i class="fas fa-user-plus"></i>
                         </div>
                     </div>
                     <div class="mt-3">
-                        <span class="trend-indicator trend-down">
-                            <i class="fas fa-arrow-down"></i> -3%
+                        {% if analytics.trend_clients > 0 %}
+                        <span class="trend-indicator trend-up">
+                            <i class="fas fa-arrow-up"></i> +{{ analytics.trend_clients }}%
                         </span>
+                        {% elif analytics.trend_clients < 0 %}
+                        <span class="trend-indicator trend-down">
+                            <i class="fas fa-arrow-down"></i> {{ analytics.trend_clients }}%
+                        </span>
+                        {% else %}
+                        <span class="trend-indicator">
+                            <i class="fas fa-minus"></i> 0%
+                        </span>
+                        {% endif %}
                         <span class="text-muted ms-2">vs periodo precedente</span>
                     </div>
                 </div>
@@ -437,217 +477,241 @@
 {% block additional_js %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Grafico andamento vendite
-        const salesCtx = document.getElementById('salesChart').getContext('2d');
-        const salesChart = new Chart(salesCtx, {
-            type: 'line',
-            data: {
-                labels: ['01/03', '02/03', '03/03', '04/03', '05/03', '06/03', '07/03', '08/03', '09/03', '10/03'],
-                datasets: [{
-                    label: 'Vendite (€)',
-                    data: [85, 120, 90, 110, 95, 130, 140, 125, 105, 150],
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
+        // Caricamento dati vendite
+        fetch('/api/stats/sales')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    initSalesChart(data.data);
+                    initDistributionChart(data.distribution);
+                    initHourlyTrafficChart(data.hourly);
+                    initFlavorChart(data.products);
+                } else {
+                    console.error('Errore nel caricamento dati vendite:', data.message);
+                }
+            })
+            .catch(error => console.error('Errore nella richiesta dati vendite:', error));
+        
+        // Inizializzazione dei grafici con dati vuoti
+        function initSalesChart(data) {
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: data ? data.labels : [],
+                    datasets: [{
+                        label: 'Vendite (€)',
+                        data: data ? data.values : [],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `€${context.raw}`;
+                                }
+                            }
+                        }
                     },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        callbacks: {
-                            label: function(context) {
-                                return `€${context.raw}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return '€' + value;
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '€' + value;
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
-
-        // Grafico distribuzione vendite
-        const distributionCtx = document.getElementById('salesDistributionChart').getContext('2d');
-        const distributionChart = new Chart(distributionCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Yogurt Grande', 'Yogurt Medio', 'Yogurt Piccolo', 'Topping Extra'],
-                datasets: [{
-                    data: [45, 30, 15, 10],
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(255, 99, 132, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
+            });
+        }
+        
+        function initDistributionChart(data) {
+            const distributionCtx = document.getElementById('salesDistributionChart').getContext('2d');
+            const distributionChart = new Chart(distributionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: data ? data.labels : [],
+                    datasets: [{
+                        data: data ? data.values : [],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(255, 99, 132, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function initHourlyTrafficChart(data) {
+            const hourlyCtx = document.getElementById('hourlyTrafficChart').getContext('2d');
+            const hourlyChart = new Chart(hourlyCtx, {
+                type: 'bar',
+                data: {
+                    labels: data ? data.labels : [],
+                    datasets: [{
+                        label: 'Numero Visite',
+                        data: data ? data.values : [],
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.label}: ${context.raw}%`;
-                            }
+                    scales: {
+                        y: {
+                            beginAtZero: true
                         }
                     }
                 }
-            }
-        });
-
-        // Grafico orari di affluenza
-        const hourlyCtx = document.getElementById('hourlyTrafficChart').getContext('2d');
-        const hourlyChart = new Chart(hourlyCtx, {
-            type: 'bar',
-            data: {
-                labels: ['10-12', '12-14', '14-16', '16-18', '18-20', '20-22'],
-                datasets: [{
-                    label: 'Numero Visite',
-                    data: [15, 35, 25, 30, 45, 35],
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+            });
+        }
+        
+        function initFlavorChart(data) {
+            const flavorCtx = document.getElementById('flavorChart').getContext('2d');
+            const flavorChart = new Chart(flavorCtx, {
+                type: 'bar',
+                data: {
+                    labels: data ? data.labels : [],
+                    datasets: [{
+                        label: 'Quantità Vendute',
+                        data: data ? data.values : [],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(165, 42, 42, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(165, 42, 42, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
 
-        // Grafico gusti più venduti
-        const flavorCtx = document.getElementById('flavorChart').getContext('2d');
-        const flavorChart = new Chart(flavorCtx, {
-            type: 'horizontalBar',
-            type: 'bar',
-            data: {
-                labels: ['Fragola', 'Cioccolato', 'Pistacchio', 'Vaniglia', 'Mango'],
-                datasets: [{
-                    label: 'Quantità Vendute',
-                    data: [42, 38, 30, 25, 20],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(165, 42, 42, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(255, 159, 64, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(165, 42, 42, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Gestione esportazione
-        document.getElementById('exportReportBtn').addEventListener('click', function() {
-            const exportModal = new bootstrap.Modal(document.getElementById('exportModal'));
-            exportModal.show();
-        });
-
-        document.getElementById('confirmExportBtn').addEventListener('click', function() {
-            const btn = this;
-            const originalText = btn.textContent;
-            const exportFormat = document.getElementById('exportFormat').value;
+        // Gestione filtri date
+        document.getElementById('applyDateRangeBtn')?.addEventListener('click', function() {
+            const startDate = document.getElementById('startDate')?.value;
+            const endDate = document.getElementById('endDate')?.value;
             
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Elaborazione...';
-            btn.disabled = true;
-            
-            // Simulazione esportazione
-            setTimeout(function() {
-                btn.innerHTML = '<i class="fas fa-check me-2"></i>Completato!';
+            if (startDate && endDate) {
+                const btn = this;
+                const originalText = btn.textContent;
                 
-                setTimeout(function() {
-                    btn.textContent = originalText;
-                    btn.disabled = false;
-                    
-                    // Chiudi il modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('exportModal'));
-                    modal.hide();
-                    
-                    // Notifica l'utente
-                    const alertHTML = `
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            Report esportato con successo in formato ${exportFormat.toUpperCase()}.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    `;
-                    document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
-                }, 1000);
-            }, 2000);
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                btn.disabled = true;
+                
+                fetch(`/api/stats/sales?start=${startDate}&end=${endDate}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Aggiorna i grafici con i nuovi dati
+                            initSalesChart(data.data);
+                            initDistributionChart(data.distribution);
+                            initHourlyTrafficChart(data.hourly);
+                            initFlavorChart(data.products);
+                            
+                            // Aggiorna anche i KPI
+                            if (data.kpi) {
+                                document.getElementById('salesKPI').textContent = data.kpi.sales || '€0';
+                                document.getElementById('visitsKPI').textContent = data.kpi.visits || '0';
+                                document.getElementById('avgSpendingKPI').textContent = data.kpi.avg_spending || '€0';
+                                document.getElementById('newClientsKPI').textContent = data.kpi.new_clients || '0';
+                            }
+                            
+                            // Mostra notifica
+                            showNotification('Dati aggiornati per il periodo selezionato.', 'success');
+                        } else {
+                            showNotification('Errore nell\'aggiornamento dei dati.', 'danger');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Errore nel caricamento dati:', err);
+                        showNotification('Errore nella richiesta dati.', 'danger');
+                    })
+                    .finally(() => {
+                        btn.textContent = originalText;
+                        btn.disabled = false;
+                    });
+            }
         });
-
-        // Gestione stampa report
-        document.getElementById('printReportBtn').addEventListener('click', function() {
-            // In un'applicazione reale, questa funzione preparerebbe una versione stampabile
-            // Per ora, simuliamo solo un messaggio di conferma
-            alert('Preparazione versione stampabile...');
-            window.print();
-        });
-
-        // Gestione dei periodi predefiniti
-        document.getElementById('predefinedPeriod').addEventListener('change', function() {
+        
+        // Gestione periodi predefiniti
+        document.getElementById('predefinedPeriod')?.addEventListener('change', function() {
+            if (this.value === 'custom') return;
+            
             const startDateInput = document.getElementById('startDate');
             const endDateInput = document.getElementById('endDate');
+            
+            if (!startDateInput || !endDateInput) return;
             
             const today = new Date();
             let startDate = new Date();
@@ -670,57 +734,69 @@
                 case 'quarter':
                     startDate.setDate(today.getDate() - 90);
                     break;
-                case 'custom':
-                    // Non fare nulla, lascia i valori correnti
-                    return;
             }
             
             // Formatta le date per l'input date (YYYY-MM-DD)
             startDateInput.value = startDate.toISOString().split('T')[0];
             endDateInput.value = endDate.toISOString().split('T')[0];
             
-            // Aggiorna i grafici (simulato)
-            simulateDataUpdate();
+            // Simula click sul pulsante di applicazione
+            document.getElementById('applyDateRangeBtn')?.click();
         });
-
-        // Applicazione intervallo di date personalizzato
-        document.getElementById('applyDateRangeBtn').addEventListener('click', function() {
-            // In un'applicazione reale, qui aggiorneremmo i dati in base all'intervallo selezionato
-            document.getElementById('predefinedPeriod').value = 'custom';
-            
-            // Simuliamo l'aggiornamento dei dati
-            simulateDataUpdate();
+        
+        // Gestione esportazione report
+        document.getElementById('exportReportBtn')?.addEventListener('click', function() {
+            const exportModal = new bootstrap.Modal(document.getElementById('exportModal'));
+            exportModal.show();
         });
-
-        // Funzione di simulazione aggiornamento dati
-        function simulateDataUpdate() {
-            const btn = document.getElementById('applyDateRangeBtn');
+        
+        document.getElementById('confirmExportBtn')?.addEventListener('click', function() {
+            const btn = this;
             const originalText = btn.textContent;
+            const exportFormat = document.getElementById('exportFormat')?.value || 'excel';
             
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Elaborazione...';
             btn.disabled = true;
             
-            // Simulazione caricamento
+            // Simulazione esportazione con messaggio di avviso
             setTimeout(function() {
-                // Aggiorna i dati con valori casuali
-                salesChart.data.datasets[0].data = Array.from({length: 10}, () => Math.floor(Math.random() * 80) + 70);
-                salesChart.update();
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Completato!';
                 
-                hourlyChart.data.datasets[0].data = Array.from({length: 6}, () => Math.floor(Math.random() * 30) + 15);
-                hourlyChart.update();
-                
-                // Notifica l'utente
-                btn.textContent = originalText;
-                btn.disabled = false;
-                
-                const alertHTML = `
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Dati aggiornati per il periodo selezionato.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                `;
-                document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
-            }, 1500);
+                setTimeout(function() {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    
+                    // Chiudi il modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('exportModal'));
+                    modal.hide();
+                    
+                    // Notifica l'utente
+                    showNotification(`L'esportazione in ${exportFormat.toUpperCase()} non è ancora implementata.`, 'info');
+                }, 1000);
+            }, 2000);
+        });
+        
+        // Funzione di utilità per mostrare notifiche
+        function showNotification(message, type = 'success') {
+            const alertHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            document.querySelector('.container-fluid').insertAdjacentHTML('afterbegin', alertHTML);
+            
+            // Rimuovi automaticamente dopo 5 secondi
+            setTimeout(() => {
+                const alerts = document.querySelectorAll('.alert');
+                if (alerts.length > 0) {
+                    try {
+                        bootstrap.Alert.getInstance(alerts[0])?.close();
+                    } catch (e) {
+                        alerts[0].remove();
+                    }
+                }
+            }, 5000);
         }
     });
 </script>
