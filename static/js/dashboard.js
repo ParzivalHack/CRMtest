@@ -135,39 +135,116 @@ function refreshDashboardData() {
     // Mostra indicatore di caricamento
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aggiornamento...';
     btn.disabled = true;
-    
-    // Simulazione chiamata API a Tilby
-    setTimeout(function() {
-        // Aggiornamento completato
-        btn.innerHTML = '<i class="fas fa-check"></i> Dati aggiornati!';
-        
-        // In un'implementazione reale, qui si aggiornerebbero i dati e grafici
-        updateRandomChartData();
-        
-        // Reset bottone dopo 2 secondi
-        setTimeout(function() {
+
+    fetch('/api/stats/sales')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                showNotification(`Errore: ${data.error}`, 'danger');
+                return;
+            }
+
+            // Update total sales
+            document.querySelector('h2.mb-0').textContent = `€${data.total_sales.toFixed(2)}`;
+
+            // Update charts and tables
+            updateClientsChart();
+            updateFlavorChart();
+            updateTopClientsTable();
+        })
+        .catch(error => {
+            console.error('Errore:', error);
+            showNotification('Errore di comunicazione con il server.', 'danger');
+        })
+        .finally(() => {
+            // Reset bottone
             btn.innerHTML = originalText;
             btn.disabled = false;
-            
-            // Notifica l'utente
-            showNotification("I dati sono stati aggiornati con successo.", "success");
-        }, 2000);
-    }, 2000);
+        });
 }
 
 /**
  * Aggiorna i dati del grafico con valori casuali (solo per demo)
  */
-function updateRandomChartData() {
-    const charts = Chart.instances;
-    
-    // Aggiorna tutti i grafici con dati casuali
-    charts.forEach(chart => {
-        chart.data.datasets.forEach(dataset => {
-            dataset.data = dataset.data.map(() => Math.floor(Math.random() * 50) + 10);
+function updateClientsChart() {
+    fetch('/api/stats/clients')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                showNotification(`Errore: ${data.error}`, 'danger');
+                return;
+            }
+
+            const clientsChart = Chart.getChart('clientsChart');
+            if (clientsChart) {
+                clientsChart.data.labels = data.labels;
+                clientsChart.data.datasets[0].data = data.new_clients;
+                clientsChart.data.datasets[1].data = data.active_clients;
+                clientsChart.update();
+            }
+        })
+        .catch(error => {
+            console.error('Errore:', error);
+            showNotification('Errore di comunicazione con il server.', 'danger');
         });
-        chart.update();
-    });
+}
+
+function updateFlavorChart() {
+    fetch('/api/stats/products')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                showNotification(`Errore: ${data.error}`, 'danger');
+                return;
+            }
+
+            const flavorChart = Chart.getChart('flavorChart');
+            if (flavorChart) {
+                flavorChart.data.labels = data.labels;
+                flavorChart.data.datasets[0].data = data.data;
+                flavorChart.update();
+            }
+        })
+        .catch(error => {
+            console.error('Errore:', error);
+            showNotification('Errore di comunicazione con il server.', 'danger');
+        });
+}
+
+function updateTopClientsTable() {
+    fetch('/api/clients/top')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                showNotification(`Errore: ${data.error}`, 'danger');
+                return;
+            }
+
+            const tbody = document.getElementById('top-clients-tbody');
+            tbody.innerHTML = '';
+            data.forEach(client => {
+                const row = `
+                    <tr>
+                        <td>${client.name}</td>
+                        <td><span class="badge bg-success">${client.loyalty_points}</span></td>
+                        <td>${client.last_visit}</td>
+                        <td>
+                            <a href="/clients/${client.id}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-user"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-success">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        })
+        .catch(error => {
+            console.error('Errore:', error);
+            showNotification('Errore di comunicazione con il server.', 'danger');
+        });
 }
 
 /**
@@ -191,6 +268,9 @@ function setupQuickActions() {
             syncWithTilby();
         });
     }
+
+    // Initial data load
+    refreshDashboardData();
 }
 
 /**

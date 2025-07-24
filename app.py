@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+print("Starting application...")
 import threading
 import time
 from datetime import datetime, timedelta
@@ -496,6 +497,70 @@ def update_client_whatsapp_consent(client_id):
 def page_not_found(e):
     return render_template('errors/404.html'), 404
 
+@app.route('/api/stats/clients', methods=['GET'])
+@login_required
+def api_clients_stats():
+    """API endpoint per recuperare le statistiche dei clienti"""
+    try:
+        # In un'applicazione reale, questi dati verrebbero dal database
+        labels = ['Ottobre', 'Novembre', 'Dicembre', 'Gennaio', 'Febbraio', 'Marzo']
+        new_clients = [12, 19, 15, 22, 26, 30]
+        active_clients = [65, 72, 78, 85, 95, 105]
+
+        return jsonify({
+            'labels': labels,
+            'new_clients': new_clients,
+            'active_clients': active_clients
+        })
+    except Exception as e:
+        logger.error(f"Errore nel recuperare le statistiche dei clienti: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/stats/products', methods=['GET'])
+@login_required
+def api_products_stats():
+    """API endpoint per recuperare le statistiche dei prodotti"""
+    try:
+        product_stats = get_product_stats()
+        if 'error' in product_stats:
+            return jsonify(product_stats)
+
+        labels = [p['name'] for p in product_stats.get('top_products', [])]
+        data = [p['quantity'] for p in product_stats.get('top_products', [])]
+
+        return jsonify({
+            'labels': labels,
+            'data': data
+        })
+    except Exception as e:
+        logger.error(f"Errore nel recuperare le statistiche dei prodotti: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/clients/top', methods=['GET'])
+@login_required
+def api_top_clients():
+    """API endpoint per recuperare i migliori clienti per punti fedeltà"""
+    try:
+        customers_data = load_json_data('customers.json')
+        all_clients = customers_data.get('customers', [])
+
+        for client in all_clients:
+            client_card = get_loyalty_card_by_customer(client.get('id'))
+            loyalty_points = client_card.get('points', 0) if client_card else 0
+            client['loyalty_points'] = loyalty_points
+
+            client_transactions = get_transactions_by_customer(client.get('id'))
+            last_visit = client_transactions[0].get('date', '') if client_transactions else 'N/A'
+            client['last_visit'] = last_visit
+
+        # Ordina i clienti per punti fedeltà
+        top_clients = sorted(all_clients, key=lambda x: x.get('loyalty_points', 0), reverse=True)
+
+        return jsonify(top_clients[:5])  # Restituisce i primi 5
+    except Exception as e:
+        logger.error(f"Errore nel recuperare i migliori clienti: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
 # Avvia la sincronizzazione all'avvio dell'applicazione
 
 # Con questo approccio
@@ -520,21 +585,10 @@ def initialize_app():
         return jsonify({"success": False, "message": f"Errore: {str(e)}"}), 500
 
 # E poi aggiungi il nuovo metodo per eseguire l'inizializzazione all'avvio
-with app.app_context():
-    # Avvia sincronizzazione all'avvio dell'applicazione
-    # Questa sezione viene eseguita quando l'app viene avviata, non ad ogni richiesta
-    @app.after_request
-    def after_request_func(response):
-        # Verifica se è la prima richiesta
-        if not getattr(app, '_got_first_request', False):
-            # Imposta il flag per evitare che venga eseguito più volte
-            app._got_first_request = True
-            # Esegui l'inizializzazione in un thread separato per non bloccare la risposta
-            threading.Thread(target=lambda: requests.get(f"http://localhost:{app.config.get('PORT', 5000)}/initialize")).start()
-        return response
 
 # Avvio dell'applicazione
 if __name__ == '__main__':
     logger.info("Avvio dell'applicazione TU&YO CRM...")
     # In produzione, utilizzeremo NGROK per esporre l'applicazione
+    print("Running application...")
     app.run(debug=True, host='0.0.0.0', port=5000)
