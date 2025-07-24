@@ -14,7 +14,7 @@ CAMPAIGNS_FILE = os.path.join(DATA_DIR, "campaigns.json")
 
 # Configurazioni Tilby API (da completare con credenziali reali)
 TILBY_API_URL = "https://api.tilby.com/v2"  # URL base dell'API Tilby
-TILBY_API_KEY = os.environ.get('TILBY_API_KEY', 'YOUR_API_KEY') # Sostituisci con la tua chiave API
+TILBY_API_KEY = "rjcutlRGpTdCc1X4s9adJEestd6hIYsEJEVeI9aX" # Sostituisci con la tua chiave API
 
 # Impostazioni di sicurezza
 SESSION_COOKIE_SECURE = True  # Impostare su True in produzione con HTTPS
