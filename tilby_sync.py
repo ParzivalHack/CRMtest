@@ -456,7 +456,9 @@ def perform_incremental_sync() -> Dict[str, Any]:
     
     if not last_sync:
         logger.info("Nessuna sincronizzazione precedente trovata, eseguo sincronizzazione completa")
-        return perform_full_sync()
+        result = perform_full_sync()
+        logger.info("Sincronizzazione completa terminata")
+        return result
     
     # Timestamp corrente per le statistiche
     start_time = datetime.datetime.now()
