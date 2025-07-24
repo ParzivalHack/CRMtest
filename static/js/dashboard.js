@@ -184,7 +184,7 @@ function setupQuickActions() {
     }
     
     // Bottone sincronizzazione Tilby
-    const syncBtn = document.querySelector('.btn-outline-info[href*="sync"]');
+    const syncBtn = document.getElementById('sync-now');
     if (syncBtn) {
         syncBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -209,19 +209,34 @@ function generateReport() {
  * Simulazione sincronizzazione con Tilby
  */
 function syncWithTilby() {
-    showNotification("Sincronizzazione con Tilby in corso...", "info");
-    
-    // Simulazione sincronizzazione
-    setTimeout(function() {
-        showNotification("Sincronizzazione completata. 15 nuovi clienti importati.", "success");
-        
-        // Aggiorna contatori casuali
-        document.querySelectorAll('.kpi-card h2').forEach(counter => {
-            const currentValue = parseInt(counter.textContent);
-            const increment = Math.floor(Math.random() * 10) + 1;
-            counter.textContent = currentValue + increment;
-        });
-    }, 3000);
+    const syncNowButton = document.getElementById('sync-now');
+    const originalText = syncNowButton.innerHTML;
+    syncNowButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sincronizzazione...';
+    syncNowButton.disabled = true;
+
+    fetch('/api/sync/now', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ full_sync: true })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification("Sincronizzazione completata con successo.", "success");
+        } else {
+            showNotification(`Errore durante la sincronizzazione: ${data.message}`, "danger");
+        }
+        syncNowButton.innerHTML = originalText;
+        syncNowButton.disabled = false;
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+        showNotification("Errore di comunicazione con il server.", "danger");
+        syncNowButton.innerHTML = originalText;
+        syncNowButton.disabled = false;
+    });
 }
 
 /**

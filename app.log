@@ -411,3 +411,621 @@
 2025-03-25 14:50:26,035 - werkzeug - INFO - 127.0.0.1 - - [25/Mar/2025 14:50:26] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
 2025-03-25 14:50:26,039 - werkzeug - INFO - 127.0.0.1 - - [25/Mar/2025 14:50:26] "[36mGET /static/css/main.css HTTP/1.1[0m" 304 -
 2025-03-25 14:50:26,041 - werkzeug - INFO - 127.0.0.1 - - [25/Mar/2025 14:50:26] "[36mGET /static/img/logo.png HTTP/1.1[0m" 304 -
+2025-07-24 13:57:26,415 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 13:57:26,435 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.2:5000
+2025-07-24 13:57:26,435 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-24 13:57:26,438 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 13:57:26,739 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 13:57:26,747 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 13:57:26,749 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:11:44,805 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:11:44,805 - tilby_sync - INFO - Nessuna sincronizzazione precedente trovata, eseguo sincronizzazione completa
+2025-07-24 14:11:44,805 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:11:44,806 - tilby_sync - INFO - Inizio sincronizzazione completa
+2025-07-24 14:11:44,806 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:11:44,806 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:11:44,806 - tilby_sync - INFO - Inizio sincronizzazione clienti
+2025-07-24 14:11:44,807 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:11:44,807 - tilby_sync - INFO - Nessuna sincronizzazione precedente trovata, eseguo sincronizzazione completa
+2025-07-24 14:11:44,807 - tilby_sync - INFO - Inizio sincronizzazione completa
+2025-07-24 14:11:44,808 - tilby_sync - INFO - Inizio sincronizzazione clienti
+2025-07-24 14:11:44,809 - tilby_api - WARNING - Errore durante la richiesta a /customers: Invalid URL '/customers': No scheme supplied. Perhaps you meant https:///customers?. Tentativo 1/3
+2025-07-24 14:11:44,809 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:11:44,818 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:11:44,818 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:11:45,808 - tilby_api - WARNING - Errore durante la richiesta a /customers: Invalid URL '/customers': No scheme supplied. Perhaps you meant https:///customers?. Tentativo 1/3
+2025-07-24 14:11:45,808 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:11:45,810 - tilby_api - WARNING - Errore durante la richiesta a /customers: Invalid URL '/customers': No scheme supplied. Perhaps you meant https:///customers?. Tentativo 2/3
+2025-07-24 14:11:45,810 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:11:45,827 - werkzeug - INFO -  * Detected change in '/app/config.py', reloading
+2025-07-24 14:11:54,293 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:11:54,294 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:11:54,294 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:11:54,294 - tilby_sync - INFO - Nessuna sincronizzazione precedente trovata, eseguo sincronizzazione completa
+2025-07-24 14:11:54,294 - tilby_sync - INFO - Inizio sincronizzazione completa
+2025-07-24 14:11:54,294 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:11:54,295 - tilby_sync - INFO - Nessuna sincronizzazione precedente trovata, eseguo sincronizzazione completa
+2025-07-24 14:11:54,295 - tilby_sync - INFO - Inizio sincronizzazione clienti
+2025-07-24 14:11:54,295 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:11:54,295 - tilby_sync - INFO - Inizio sincronizzazione completa
+2025-07-24 14:11:54,296 - tilby_sync - INFO - Inizio sincronizzazione clienti
+2025-07-24 14:11:54,308 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:11:54,309 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:11:54,700 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100. Tentativo 1/3
+2025-07-24 14:11:54,700 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:11:55,564 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100. Tentativo 1/3
+2025-07-24 14:11:55,564 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:11:55,796 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100. Tentativo 2/3
+2025-07-24 14:11:55,797 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:12:03,101 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:12:03,102 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:12:03,102 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:12:03,102 - tilby_sync - INFO - Nessuna sincronizzazione precedente trovata, eseguo sincronizzazione completa
+2025-07-24 14:12:03,103 - tilby_sync - INFO - Inizio sincronizzazione completa
+2025-07-24 14:12:03,103 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:12:03,103 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:12:03,103 - tilby_sync - INFO - Nessuna sincronizzazione precedente trovata, eseguo sincronizzazione completa
+2025-07-24 14:12:03,103 - tilby_sync - INFO - Inizio sincronizzazione clienti
+2025-07-24 14:12:03,104 - tilby_sync - INFO - Inizio sincronizzazione completa
+2025-07-24 14:12:03,104 - tilby_sync - INFO - Inizio sincronizzazione clienti
+2025-07-24 14:12:03,116 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:12:03,117 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:12:03,477 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100. Tentativo 1/3
+2025-07-24 14:12:03,477 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:12:04,201 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100. Tentativo 1/3
+2025-07-24 14:12:04,201 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:12:04,575 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100. Tentativo 2/3
+2025-07-24 14:12:04,575 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:12:05,300 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100. Tentativo 2/3
+2025-07-24 14:12:05,300 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:12:06,674 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100. Tentativo 3/3
+2025-07-24 14:12:06,674 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100
+2025-07-24 14:12:06,674 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:12:06,674 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:12:06,942 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/loyalty/cards: 404 Client Error: Not Found for url: https://api.tilby.com/loyalty/cards. Tentativo 1/3
+2025-07-24 14:12:06,943 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:12:07,397 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100. Tentativo 3/3
+2025-07-24 14:12:07,397 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100
+2025-07-24 14:12:07,397 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:12:07,397 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:12:07,941 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/loyalty/cards: 404 Client Error: Not Found for url: https://api.tilby.com/loyalty/cards. Tentativo 1/3
+2025-07-24 14:12:07,941 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:12:08,039 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/loyalty/cards: 404 Client Error: Not Found for url: https://api.tilby.com/loyalty/cards. Tentativo 2/3
+2025-07-24 14:12:08,040 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:12:09,041 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/loyalty/cards: 404 Client Error: Not Found for url: https://api.tilby.com/loyalty/cards. Tentativo 2/3
+2025-07-24 14:12:09,041 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:12:10,138 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/loyalty/cards: 404 Client Error: Not Found for url: https://api.tilby.com/loyalty/cards. Tentativo 3/3
+2025-07-24 14:12:10,139 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/loyalty/cards: 404 Client Error: Not Found for url: https://api.tilby.com/loyalty/cards
+2025-07-24 14:12:10,139 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:12:10,139 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-06-24 al 2025-07-24
+2025-07-24 14:12:10,409 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/transactions: 404 Client Error: Not Found for url: https://api.tilby.com/transactions?page=1&limit=100&start_date=2025-06-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:12:10,410 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:12:11,306 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/loyalty/cards: 404 Client Error: Not Found for url: https://api.tilby.com/loyalty/cards. Tentativo 3/3
+2025-07-24 14:12:11,306 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/loyalty/cards: 404 Client Error: Not Found for url: https://api.tilby.com/loyalty/cards
+2025-07-24 14:12:11,306 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:12:11,307 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-06-24 al 2025-07-24
+2025-07-24 14:12:11,405 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/transactions: 404 Client Error: Not Found for url: https://api.tilby.com/transactions?page=1&limit=100&start_date=2025-06-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:12:11,405 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:12:11,551 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/transactions: 404 Client Error: Not Found for url: https://api.tilby.com/transactions?page=1&limit=100&start_date=2025-06-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:12:11,552 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:12:12,664 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/transactions: 404 Client Error: Not Found for url: https://api.tilby.com/transactions?page=1&limit=100&start_date=2025-06-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:12:12,664 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:12:13,649 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/transactions: 404 Client Error: Not Found for url: https://api.tilby.com/transactions?page=1&limit=100&start_date=2025-06-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:12:13,649 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/transactions: 404 Client Error: Not Found for url: https://api.tilby.com/transactions?page=1&limit=100&start_date=2025-06-24&end_date=2025-07-24
+2025-07-24 14:12:13,650 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:12:13,650 - tilby_sync - INFO - Inizio sincronizzazione prodotti
+2025-07-24 14:12:13,920 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/products: 404 Client Error: Not Found for url: https://api.tilby.com/products. Tentativo 1/3
+2025-07-24 14:12:13,920 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:12:14,926 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/transactions: 404 Client Error: Not Found for url: https://api.tilby.com/transactions?page=1&limit=100&start_date=2025-06-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:12:14,926 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/transactions: 404 Client Error: Not Found for url: https://api.tilby.com/transactions?page=1&limit=100&start_date=2025-06-24&end_date=2025-07-24
+2025-07-24 14:12:14,927 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:12:14,927 - tilby_sync - INFO - Inizio sincronizzazione prodotti
+2025-07-24 14:12:15,024 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/products: 404 Client Error: Not Found for url: https://api.tilby.com/products. Tentativo 1/3
+2025-07-24 14:12:15,024 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:12:15,173 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/products: 404 Client Error: Not Found for url: https://api.tilby.com/products. Tentativo 2/3
+2025-07-24 14:12:15,173 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:12:16,184 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/products: 404 Client Error: Not Found for url: https://api.tilby.com/products. Tentativo 2/3
+2025-07-24 14:12:16,184 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:12:17,274 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/products: 404 Client Error: Not Found for url: https://api.tilby.com/products. Tentativo 3/3
+2025-07-24 14:12:17,274 - tilby_sync - ERROR - Errore durante la sincronizzazione dei prodotti: Errore durante la richiesta a https://api.tilby.com/products: 404 Client Error: Not Found for url: https://api.tilby.com/products
+2025-07-24 14:12:17,274 - tilby_sync - INFO - Sincronizzazione prodotti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:12:17,275 - tilby_sync - INFO - Sincronizzazione completata in 14.17 secondi
+2025-07-24 14:12:18,454 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/products: 404 Client Error: Not Found for url: https://api.tilby.com/products. Tentativo 3/3
+2025-07-24 14:12:18,454 - tilby_sync - ERROR - Errore durante la sincronizzazione dei prodotti: Errore durante la richiesta a https://api.tilby.com/products: 404 Client Error: Not Found for url: https://api.tilby.com/products
+2025-07-24 14:12:18,454 - tilby_sync - INFO - Sincronizzazione prodotti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:12:18,455 - tilby_sync - INFO - Sincronizzazione completata in 15.35 secondi
+2025-07-24 14:12:18,455 - __main__ - INFO - Sincronizzazione periodica completata con successo: 0 nuovi clienti, 0 nuove carte
+2025-07-24 14:18:53,692 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:18:53,693 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:18:53,693 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:18:53,693 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:18:53,694 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:18:53,695 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:18:53,695 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:18:53,712 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:18:53,713 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:18:54,076 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 1/3
+2025-07-24 14:18:54,077 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:03,796 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:03,796 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:19:03,797 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:03,797 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:19:03,797 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:19:03,799 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:03,800 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:03,815 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:19:03,816 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:19:04,202 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 1/3
+2025-07-24 14:19:04,202 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:10,664 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:10,665 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:19:10,665 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:10,665 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:10,666 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:19:10,666 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:19:10,667 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:10,679 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:19:10,680 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:19:11,009 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 1/3
+2025-07-24 14:19:11,010 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:19,424 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:19,425 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:19:19,425 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:19,425 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:19:19,425 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:19:19,427 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:19,428 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:19,440 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:19:19,440 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:19:19,773 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 1/3
+2025-07-24 14:19:19,773 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:20,529 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 1/3
+2025-07-24 14:19:20,529 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:32,514 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:32,515 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:19:32,515 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:32,515 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:19:32,515 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:19:32,517 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:32,518 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:32,532 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:19:32,532 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:19:32,862 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/customers: 404 Client Error: Not Found for url: https://api.tilby.com/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 1/3
+2025-07-24 14:19:32,862 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:33,543 - werkzeug - INFO -  * Detected change in '/app/config.py', reloading
+2025-07-24 14:19:42,819 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:42,819 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:19:42,820 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:19:42,820 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:19:42,820 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:19:42,822 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:42,822 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:19:42,835 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:19:42,836 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:19:43,070 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 1/3
+2025-07-24 14:19:43,070 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:43,994 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 1/3
+2025-07-24 14:19:43,994 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:44,241 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 2/3
+2025-07-24 14:19:44,242 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:19:45,090 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 2/3
+2025-07-24 14:19:45,091 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:19:46,413 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 3/3
+2025-07-24 14:19:46,413 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869
+2025-07-24 14:19:46,414 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:19:46,414 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:19:46,586 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 1/3
+2025-07-24 14:19:46,586 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:47,267 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869. Tentativo 3/3
+2025-07-24 14:19:47,267 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A12%3A18.454869
+2025-07-24 14:19:47,269 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:19:47,270 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:19:47,511 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 1/3
+2025-07-24 14:19:47,511 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:47,759 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 2/3
+2025-07-24 14:19:47,759 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:19:48,608 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 2/3
+2025-07-24 14:19:48,608 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:19:49,854 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 3/3
+2025-07-24 14:19:49,854 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards
+2025-07-24 14:19:49,854 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:19:49,855 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-07-24 al 2025-07-24
+2025-07-24 14:19:50,026 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:19:50,027 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:50,780 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 3/3
+2025-07-24 14:19:50,780 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards
+2025-07-24 14:19:50,781 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:19:50,781 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-07-24 al 2025-07-24
+2025-07-24 14:19:51,027 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:19:51,027 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:19:51,200 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:19:51,200 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:19:52,200 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:19:52,200 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:19:53,371 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:19:53,371 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24
+2025-07-24 14:19:53,372 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:19:53,372 - tilby_sync - INFO - Sincronizzazione incrementale completata in 10.55 secondi
+2025-07-24 14:19:54,297 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:19:54,298 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24
+2025-07-24 14:19:54,299 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:19:54,299 - tilby_sync - INFO - Sincronizzazione incrementale completata in 11.48 secondi
+2025-07-24 14:19:54,299 - __main__ - INFO - Sincronizzazione periodica completata con successo: 0 nuovi clienti, 0 nuove carte
+2025-07-24 14:26:33,773 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:26:33,774 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:26:33,774 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:26:33,774 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:26:33,774 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:26:33,776 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:26:33,776 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:26:33,790 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:26:33,791 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:26:34,077 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 1/3
+2025-07-24 14:26:34,077 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:26:51,690 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:26:51,690 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:26:51,690 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:26:51,691 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:26:51,691 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:26:51,693 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:26:51,694 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:26:51,707 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:26:51,707 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:26:52,009 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 1/3
+2025-07-24 14:26:52,010 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:26:52,717 - werkzeug - INFO -  * Detected change in '/app/tilby_api.py', reloading
+2025-07-24 14:27:12,970 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:27:12,971 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:27:12,971 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:27:12,971 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:27:12,971 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:27:12,972 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:27:12,973 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:27:12,985 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:27:12,986 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:27:13,238 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 1/3
+2025-07-24 14:27:13,238 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:27:13,994 - werkzeug - INFO -  * Detected change in '/app/tilby_api.py', reloading
+2025-07-24 14:27:14,446 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:27:14,447 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:27:14,447 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:27:14,447 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:27:14,448 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:27:14,449 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:27:14,451 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:27:14,463 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:27:14,463 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:27:14,750 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 1/3
+2025-07-24 14:27:14,750 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:27:27,265 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:27:27,266 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:27:27,266 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:27:27,266 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:27:27,267 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:27:27,267 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:27:27,268 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:27:27,280 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:27:27,280 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:27:27,513 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 1/3
+2025-07-24 14:27:27,513 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:27:28,439 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 1/3
+2025-07-24 14:27:28,440 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:27:28,609 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 2/3
+2025-07-24 14:27:28,609 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:27:29,612 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 2/3
+2025-07-24 14:27:29,612 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:27:30,781 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 3/3
+2025-07-24 14:27:30,781 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255
+2025-07-24 14:27:30,782 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:27:30,782 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:27:30,953 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/loyalty/cards. Tentativo 1/3
+2025-07-24 14:27:30,953 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:27:31,709 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255. Tentativo 3/3
+2025-07-24 14:27:31,709 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A19%3A54.299255
+2025-07-24 14:27:31,709 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:27:31,710 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:27:31,954 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/loyalty/cards. Tentativo 1/3
+2025-07-24 14:27:31,954 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:27:32,126 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/loyalty/cards. Tentativo 2/3
+2025-07-24 14:27:32,126 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:27:33,126 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/loyalty/cards. Tentativo 2/3
+2025-07-24 14:27:33,127 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:27:34,222 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/loyalty/cards. Tentativo 3/3
+2025-07-24 14:27:34,223 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/v2/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/loyalty/cards
+2025-07-24 14:27:34,223 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:27:34,223 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-07-24 al 2025-07-24
+2025-07-24 14:27:34,396 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:27:34,396 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:27:35,222 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/loyalty/cards. Tentativo 3/3
+2025-07-24 14:27:35,222 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/v2/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/loyalty/cards
+2025-07-24 14:27:35,222 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:27:35,223 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-07-24 al 2025-07-24
+2025-07-24 14:27:35,396 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:27:35,396 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:27:35,568 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:27:35,568 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:27:36,492 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:27:36,493 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:27:37,665 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:27:37,665 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/v2/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24
+2025-07-24 14:27:37,665 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:27:37,666 - tilby_sync - INFO - Sincronizzazione incrementale completata in 10.40 secondi
+2025-07-24 14:27:38,665 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:27:38,665 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/v2/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24
+2025-07-24 14:27:38,666 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:27:38,666 - tilby_sync - INFO - Sincronizzazione incrementale completata in 11.40 secondi
+2025-07-24 14:27:38,666 - __main__ - INFO - Sincronizzazione periodica completata con successo: 0 nuovi clienti, 0 nuove carte
+2025-07-24 14:34:17,702 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:34:17,703 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:34:17,703 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:34:17,703 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:34:17,703 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:34:17,705 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:34:17,705 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:34:17,719 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:34:17,720 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:34:17,986 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250. Tentativo 1/3
+2025-07-24 14:34:17,986 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:34:44,852 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:34:44,852 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:34:44,854 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:34:44,854 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:34:44,854 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:34:44,854 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:34:44,856 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:34:44,878 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:34:44,879 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:34:45,164 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250. Tentativo 1/3
+2025-07-24 14:34:45,164 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:34:45,900 - werkzeug - INFO -  * Detected change in '/app/tilby_api.py', reloading
+2025-07-24 14:34:56,834 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:34:56,835 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:34:56,836 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:34:56,836 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:34:56,836 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:34:56,837 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:34:56,838 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:34:56,854 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:34:56,854 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:34:57,425 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250. Tentativo 1/3
+2025-07-24 14:34:57,425 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:34:58,010 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250. Tentativo 1/3
+2025-07-24 14:34:58,010 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:34:58,597 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250. Tentativo 2/3
+2025-07-24 14:34:58,597 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:34:59,962 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250. Tentativo 2/3
+2025-07-24 14:34:59,962 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:35:00,768 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250. Tentativo 3/3
+2025-07-24 14:35:00,769 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250
+2025-07-24 14:35:00,769 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:35:00,769 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:35:00,941 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 1/3
+2025-07-24 14:35:00,941 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:35:02,116 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 2/3
+2025-07-24 14:35:02,116 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:35:02,293 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250. Tentativo 3/3
+2025-07-24 14:35:02,293 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A27%3A38.666250
+2025-07-24 14:35:02,295 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:35:02,295 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:35:02,471 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 1/3
+2025-07-24 14:35:02,472 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:35:03,644 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 2/3
+2025-07-24 14:35:03,644 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:35:04,212 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 3/3
+2025-07-24 14:35:04,212 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards
+2025-07-24 14:35:04,212 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:35:04,213 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-07-24 al 2025-07-24
+2025-07-24 14:35:04,309 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:35:04,309 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:35:05,485 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:35:05,485 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:35:05,817 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 3/3
+2025-07-24 14:35:05,817 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards
+2025-07-24 14:35:05,818 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:35:05,818 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-07-24 al 2025-07-24
+2025-07-24 14:35:05,912 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:35:05,912 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:35:07,084 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:35:07,084 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:35:07,584 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:35:07,585 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24
+2025-07-24 14:35:07,585 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:35:07,586 - tilby_sync - INFO - Sincronizzazione incrementale completata in 10.75 secondi
+2025-07-24 14:35:09,305 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:35:09,305 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24
+2025-07-24 14:35:09,306 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:35:09,306 - tilby_sync - INFO - Sincronizzazione incrementale completata in 12.47 secondi
+2025-07-24 14:35:09,306 - __main__ - INFO - Sincronizzazione periodica completata con successo: 0 nuovi clienti, 0 nuove carte
+2025-07-24 14:41:46,280 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:41:46,281 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:41:46,281 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:41:46,282 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:41:46,282 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:41:46,283 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:41:46,284 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:41:46,301 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:41:46,302 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:41:46,491 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386. Tentativo 1/3
+2025-07-24 14:41:46,492 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:42:03,248 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:42:03,248 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:42:03,249 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:42:03,249 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:42:03,249 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:42:03,250 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:42:03,251 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:42:03,264 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:42:03,265 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:42:03,503 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386. Tentativo 1/3
+2025-07-24 14:42:03,503 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:42:04,275 - werkzeug - INFO -  * Detected change in '/app/tilby_sync.py', reloading
+2025-07-24 14:42:16,914 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:42:16,914 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:42:16,921 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:42:16,921 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:42:16,922 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:42:16,925 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:42:16,925 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:42:16,946 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:42:16,946 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:42:17,268 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386. Tentativo 1/3
+2025-07-24 14:42:17,269 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:42:18,086 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386. Tentativo 1/3
+2025-07-24 14:42:18,086 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:42:18,441 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386. Tentativo 2/3
+2025-07-24 14:42:18,441 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:42:19,183 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386. Tentativo 2/3
+2025-07-24 14:42:19,183 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:42:20,614 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386. Tentativo 3/3
+2025-07-24 14:42:20,614 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386
+2025-07-24 14:42:20,614 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:42:20,615 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:42:20,795 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 1/3
+2025-07-24 14:42:20,795 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:42:21,355 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386. Tentativo 3/3
+2025-07-24 14:42:21,355 - tilby_sync - ERROR - Errore durante la sincronizzazione dei clienti: Errore durante la richiesta a https://api.tilby.com/v2/customers: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/customers?page=1&limit=100&updated_since=2025-07-24T14%3A35%3A09.306386
+2025-07-24 14:42:21,356 - tilby_sync - INFO - Sincronizzazione clienti completata: 0 nuovi, 0 aggiornati, 0 totali
+2025-07-24 14:42:21,356 - tilby_sync - INFO - Inizio sincronizzazione carte fedeltà
+2025-07-24 14:42:21,785 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 1/3
+2025-07-24 14:42:21,786 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:42:21,967 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 2/3
+2025-07-24 14:42:21,968 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:42:22,957 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 2/3
+2025-07-24 14:42:22,957 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:42:24,138 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 3/3
+2025-07-24 14:42:24,138 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards
+2025-07-24 14:42:24,138 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:42:24,138 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-07-24 al 2025-07-24
+2025-07-24 14:42:24,309 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:42:24,309 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:42:25,130 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards. Tentativo 3/3
+2025-07-24 14:42:25,130 - tilby_sync - ERROR - Errore durante la sincronizzazione delle carte fedeltà: Errore durante la richiesta a https://api.tilby.com/v2/loyalty/cards: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/loyalty/cards
+2025-07-24 14:42:25,130 - tilby_sync - INFO - Sincronizzazione carte fedeltà completata: 0 nuove, 0 aggiornate, 0 totali
+2025-07-24 14:42:25,130 - tilby_sync - INFO - Inizio sincronizzazione transazioni dal 2025-07-24 al 2025-07-24
+2025-07-24 14:42:25,309 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 1/3
+2025-07-24 14:42:25,310 - tilby_api - INFO - Attendo 1 secondi prima di riprovare...
+2025-07-24 14:42:25,481 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:42:25,481 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:42:26,640 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 2/3
+2025-07-24 14:42:26,640 - tilby_api - INFO - Attendo 2 secondi prima di riprovare...
+2025-07-24 14:42:27,653 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:42:27,653 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24
+2025-07-24 14:42:27,654 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:42:27,654 - tilby_sync - INFO - Sincronizzazione incrementale completata in 10.74 secondi
+2025-07-24 14:42:28,813 - tilby_api - WARNING - Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24. Tentativo 3/3
+2025-07-24 14:42:28,813 - tilby_sync - ERROR - Errore durante la sincronizzazione delle transazioni: Errore durante la richiesta a https://api.tilby.com/v2/transactions: 401 Client Error: Unauthorized for url: https://api.tilby.com/v2/transactions?page=1&limit=100&start_date=2025-07-24&end_date=2025-07-24
+2025-07-24 14:42:28,814 - tilby_sync - INFO - Sincronizzazione transazioni completata: 0 nuove, 0 totali
+2025-07-24 14:42:28,814 - tilby_sync - INFO - Sincronizzazione incrementale completata in 11.89 secondi
+2025-07-24 14:42:28,814 - __main__ - INFO - Sincronizzazione periodica completata con successo: 0 nuovi clienti, 0 nuove carte
+2025-07-24 14:49:07,949 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:49:07,950 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:49:07,950 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:49:07,950 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:49:07,951 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:49:07,952 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:49:07,953 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:49:07,966 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:49:07,967 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:49:27,846 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:49:27,847 - __main__ - INFO - Avvio sincronizzazione periodica (intervallo: 3600 secondi)
+2025-07-24 14:49:27,847 - tilby_sync - INFO - Inizio sincronizzazione incrementale
+2025-07-24 14:49:27,847 - __main__ - INFO - Thread di sincronizzazione avviato
+2025-07-24 14:49:27,847 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:49:27,848 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:49:27,849 - tilby_sync - INFO - Inizio sincronizzazione clienti (incrementale)
+2025-07-24 14:49:27,861 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:49:27,862 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:49:28,872 - werkzeug - INFO -  * Detected change in '/app/app.py', reloading
+2025-07-24 14:49:29,342 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:49:29,352 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:49:29,353 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:49:43,435 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:49:43,443 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:49:43,444 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:56:37,803 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:56:37,863 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:56:37,865 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:56:55,719 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:56:55,728 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:56:55,728 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:56:56,738 - werkzeug - INFO -  * Detected change in '/app/app.py', reloading
+2025-07-24 14:57:11,370 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:57:11,379 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:57:11,379 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:57:24,179 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:57:24,188 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:57:24,189 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:57:36,002 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:57:36,011 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:57:36,012 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:57:52,089 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:57:52,103 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:57:52,104 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:58:08,913 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:58:08,923 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:58:08,924 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:58:18,690 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:58:18,698 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:58:18,699 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:58:42,514 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:58:42,523 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:58:42,523 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:58:50,352 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:58:50,361 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:58:50,362 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 14:59:04,179 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 14:59:04,188 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 14:59:04,189 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 15:05:59,510 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 15:05:59,522 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 15:05:59,523 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 15:06:17,374 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 15:06:17,383 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 15:06:17,383 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 15:06:18,392 - werkzeug - INFO -  * Detected change in '/app/app.py', reloading
+2025-07-24 15:06:18,755 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 15:06:18,765 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 15:06:18,766 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 16:53:17,759 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 16:53:17,768 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 16:53:17,770 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 16:53:40,623 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 16:53:40,632 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 16:53:40,633 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:01:05,118 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:01:05,129 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:01:05,131 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:01:25,409 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:01:25,425 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:01:25,429 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:08:21,095 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:08:21,107 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:08:21,110 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:08:34,100 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:08:34,109 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:08:34,110 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:15:33,547 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:15:33,558 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:15:33,561 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:15:52,526 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:15:52,536 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:15:52,537 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:23:28,662 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:23:28,672 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:23:28,673 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:24:04,844 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:24:04,854 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:24:04,856 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:24:05,866 - werkzeug - INFO -  * Detected change in '/app/app.py', reloading
+2025-07-24 17:24:27,470 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:24:27,479 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:24:27,480 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:31:24,747 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:31:24,759 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:31:24,762 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-24 17:31:41,714 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-24 17:31:41,724 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 17:31:41,726 - werkzeug - INFO -  * Debugger PIN: 125-203-568

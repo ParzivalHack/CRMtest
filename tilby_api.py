@@ -123,7 +123,7 @@ class TilbyAPI:
             response = self._make_request("get", "status")
             return response.get("status") == "ok"
         except Exception as e:
-            logger.error(f"Errore durante il test di connessione: {str(e)}")
+            logger.error(f"Errore during il test di connessione: {str(e)}")
             return False
     
     def get_customers(self, page: int = 1, limit: int = 100, last_sync: Optional[str] = None) -> Dict[str, Any]:
