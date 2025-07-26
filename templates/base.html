@@ -37,7 +37,7 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {% if 'whatsapp' in request.endpoint %}active{% endif %}" href="#" id="whatsappDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle {% if request.endpoint and 'whatsapp' in request.endpoint %}active{% endif %}" href="#" id="whatsappDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="fab fa-whatsapp"></i> WhatsApp
                         </a>
                         <ul class="dropdown-menu">

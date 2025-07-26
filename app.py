@@ -7,20 +7,17 @@ import time
 from datetime import datetime, timedelta
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
-import requests
 
 # Importa i nuovi moduli per l'integrazione Tilby
-from tilby_api import get_tilby_api_client, TilbyAPIError
+from tilby_api import TilbyAPIError
 from tilby_sync import (
     perform_incremental_sync, 
     perform_full_sync, 
-    get_customers_by_filter,
     get_customer_by_id,
     get_loyalty_card_by_customer,
     get_transactions_by_customer,
     get_product_stats,
     get_customer_stats,
-    update_customer_info,
     update_whatsapp_consent,
     add_custom_notes
 )
@@ -536,6 +533,26 @@ def api_products_stats():
         logger.error(f"Errore nel recuperare le statistiche dei prodotti: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/stats/products', methods=['GET'])
+@login_required
+def api_products_stats():
+    """API endpoint per recuperare le statistiche dei prodotti"""
+    try:
+        product_stats = get_product_stats()
+        if 'error' in product_stats:
+            return jsonify(product_stats)
+
+        labels = [p['name'] for p in product_stats.get('top_products', [])]
+        data = [p['quantity'] for p in product_stats.get('top_products', [])]
+
+        return jsonify({
+            'labels': labels,
+            'data': data
+        })
+    except Exception as e:
+        logger.error(f"Errore nel recuperare le statistiche dei prodotti: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/clients/top', methods=['GET'])
 @login_required
 def api_top_clients():
@@ -559,6 +576,23 @@ def api_top_clients():
         return jsonify(top_clients[:5])  # Restituisce i primi 5
     except Exception as e:
         logger.error(f"Errore nel recuperare i migliori clienti: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/stats/whatsapp/response-rate', methods=['GET'])
+@login_required
+def api_whatsapp_response_rate():
+    """API endpoint per recuperare il tasso di risposta delle campagne WhatsApp"""
+    try:
+        # In un'applicazione reale, questi dati verrebbero dal database
+        labels = ['Gen', 'Feb', 'Mar']
+        data = [45, 60, 72]
+
+        return jsonify({
+            'labels': labels,
+            'data': data
+        })
+    except Exception as e:
+        logger.error(f"Errore nel recuperare il tasso di risposta WhatsApp: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 # Avvia la sincronizzazione all'avvio dell'applicazione
