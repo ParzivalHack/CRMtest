@@ -13,13 +13,11 @@ from tilby_api import get_tilby_api_client, TilbyAPIError
 from tilby_sync import (
     perform_incremental_sync, 
     perform_full_sync, 
-    get_customers_by_filter,
     get_customer_by_id,
     get_loyalty_card_by_customer,
     get_transactions_by_customer,
     get_product_stats,
     get_customer_stats,
-    update_customer_info,
     update_whatsapp_consent,
     add_custom_notes
 )
@@ -434,12 +432,6 @@ def api_sync_now():
             'message': 'Sincronizzazione completata con successo' if stats['success'] else 'Errore durante la sincronizzazione',
             'stats': stats
         })
-    except TilbyAPIError as e:
-        logger.error(f"Errore API Tilby durante la sincronizzazione manuale: {str(e)}")
-        return jsonify({
-            'success': False,
-            'message': f'Errore API Tilby: {str(e)}'
-        }), 500
     except Exception as e:
         logger.error(f"Errore durante la sincronizzazione manuale: {str(e)}")
         return jsonify({

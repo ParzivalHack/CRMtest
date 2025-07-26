@@ -1178,3 +1178,56 @@
 2025-07-26 08:50:45,140 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
 2025-07-26 08:50:45,150 - werkzeug - WARNING -  * Debugger is active!
 2025-07-26 08:50:45,151 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:52:29,901 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:52:29,918 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:52:29,920 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:52:45,812 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:52:45,821 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:52:45,822 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:52:46,832 - werkzeug - INFO -  * Detected change in '/app/tilby_api.py', reloading
+2025-07-26 09:52:47,194 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:52:47,203 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:52:47,203 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:53:00,007 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:53:00,014 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:53:00,015 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:53:01,023 - werkzeug - INFO -  * Detected change in '/app/config.py', reloading
+2025-07-26 09:53:44,447 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:53:44,456 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:53:44,457 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:53:57,225 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:53:57,233 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:53:57,234 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:54:39,042 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:54:39,050 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:54:39,051 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:54:55,781 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:54:55,788 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:54:55,789 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:55:39,604 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:55:39,612 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:55:39,613 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:56:21,419 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:56:21,427 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:56:21,428 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:56:22,437 - werkzeug - INFO -  * Detected change in '/app/app.py', reloading
+2025-07-26 09:57:02,556 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:57:02,565 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:57:02,566 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:57:11,315 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:57:11,323 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:57:11,325 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:57:42,098 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:57:42,107 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:57:42,107 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:57:49,842 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:57:49,849 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:57:49,850 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:57:50,859 - werkzeug - INFO -  * Detected change in '/app/tilby_api.py', reloading
+2025-07-26 09:58:37,040 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:58:37,049 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:58:37,049 - werkzeug - INFO -  * Debugger PIN: 125-203-568
+2025-07-26 09:58:38,058 - werkzeug - INFO -  * Detected change in '/app/config.py', reloading
+2025-07-26 09:59:26,232 - __main__ - INFO - Avvio dell'applicazione TU&YO CRM...
+2025-07-26 09:59:26,240 - werkzeug - WARNING -  * Debugger is active!
+2025-07-26 09:59:26,241 - werkzeug - INFO -  * Debugger PIN: 125-203-568

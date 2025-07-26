@@ -416,57 +416,59 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Grafico tasso di risposta
-        const respChartCtx = document.getElementById('responseRateChart').getContext('2d');
-        const responseChart = new Chart(respChartCtx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Tasso di Risposta',
-                    data: [],
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+        const respChartCtx = document.getElementById('responseRateChart');
+        if (respChartCtx) {
+            const responseChart = new Chart(respChartCtx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Tasso di Risposta',
+                        data: [],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.4,
+                        fill: true
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            callback: function(value) {
-                                return value + '%';
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
                             }
                         }
                     }
                 }
+            });
+
+            function updateResponseRateChart() {
+                fetch('/api/stats/whatsapp/response-rate')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error(data.error);
+                            return;
+                        }
+                        responseChart.data.labels = data.labels;
+                        responseChart.data.datasets[0].data = data.data;
+                        responseChart.update();
+                    });
             }
-        });
 
-        function updateResponseRateChart() {
-            fetch('/api/stats/whatsapp/response-rate')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        console.error(data.error);
-                        return;
-                    }
-                    responseChart.data.labels = data.labels;
-                    responseChart.data.datasets[0].data = data.data;
-                    responseChart.update();
-                });
+            updateResponseRateChart();
         }
-
-        updateResponseRateChart();
 
         // Gestione form per nuovo template
         const templateText = document.getElementById('templateText');
