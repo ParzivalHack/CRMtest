@@ -123,7 +123,7 @@ class TilbyAPI:
             response = self._make_request("get", "status")
             return response.get("status") == "ok"
         except Exception as e:
-            logger.error(f"Errore durante il test di connessione: {str(e)}")
+            logger.error(f"Errore during il test di connessione: {str(e)}")
             return False
     
     def get_customers(self, page: int = 1, limit: int = 100, last_sync: Optional[str] = None) -> Dict[str, Any]:
@@ -171,7 +171,7 @@ class TilbyAPI:
         Returns:
             Dict contenente le carte fedeltà
         """
-        endpoint = "loyalty/cards"
+        endpoint = "fidelities"
         params = {}
         
         if customer_id:
@@ -189,7 +189,7 @@ class TilbyAPI:
         Returns:
             Dict contenente i dettagli dei punti
         """
-        return self._make_request("get", f"loyalty/cards/{card_id}/points")
+        return self._make_request("get", f"fidelities/points/{card_id}")
     
     def get_transactions(self, start_date: Optional[str] = None, end_date: Optional[str] = None, 
                          customer_id: Optional[Union[str, int]] = None, 
@@ -221,7 +221,7 @@ class TilbyAPI:
         if customer_id:
             params["customer_id"] = customer_id
             
-        return self._make_request("get", "transactions", params=params)
+        return self._make_request("get", "sales", params=params)
     
     def get_products(self) -> Dict[str, Any]:
         """
@@ -230,7 +230,7 @@ class TilbyAPI:
         Returns:
             Dict contenente i prodotti
         """
-        return self._make_request("get", "products")
+        return self._make_request("get", "items")
     
     def add_loyalty_points(self, card_id: Union[str, int], points: int, reason: str) -> Dict[str, Any]:
         """
@@ -249,7 +249,7 @@ class TilbyAPI:
             "reason": reason
         }
         
-        return self._make_request("post", f"loyalty/cards/{card_id}/points", json=data)
+        return self._make_request("post", "fidelities/movements", json=data)
     
     def create_customer(self, customer_data: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -275,19 +275,6 @@ class TilbyAPI:
             Dict contenente i dettagli del cliente aggiornato
         """
         return self._make_request("put", f"customers/{customer_id}", json=customer_data)
-    
-    def get_loyalty_card_by_phone(self, phone: str) -> Dict[str, Any]:
-        """
-        Recupera una carta fedeltà in base al numero di telefono del cliente.
-        
-        Args:
-            phone: Numero di telefono del cliente
-            
-        Returns:
-            Dict contenente i dettagli della carta fedeltà
-        """
-        params = {"phone": phone}
-        return self._make_request("get", "loyalty/cards/by-phone", params=params)
 
 
 class TilbyAPIError(Exception):
